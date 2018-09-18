@@ -1,0 +1,6 @@
+1. Start Eclipse
+2. Goto Perspective - Git Repositories and click on Add Git Repo
+3. Put in this project's URL (found by copying from the clone button on github) and click next and finish
+4. Go to File/Import and select Git
+5. Choose to import a "local repository" and select Launcher
+6. Now the code is connected and you can commit by right-clicking and using Team - Commit
