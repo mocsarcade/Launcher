@@ -13,8 +13,8 @@ import javax.swing.border.Border;
 
 public class EmptyItem extends MenuButton {
 	
-	public EmptyItem(int row, int col, int width, int height) {
-		super(row, col, width, height);
+	public EmptyItem(int row, int col, int width, int height, GameInfo info) {
+		super(row, col, width, height, info);
 		setVisible(false);
 	}
 	

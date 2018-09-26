@@ -8,24 +8,23 @@ import java.awt.event.KeyListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.*;
 
-public class MenuButton extends JLabel {
+public class MenuButtonOLD extends JButton {
 
 
-	protected static MenuButton[][] buttons;
+	protected static MenuButtonOLD[][] buttons;
     public int curRow;
     public int curCol;
     
-	public MenuButton(MenuButton[][] _buttons) {
+	public MenuButtonOLD(MenuButtonOLD[][] _buttons) {
 		//First menuItem initializes buttons
 		buttons = _buttons;
 	}
     
-	public MenuButton(int row, int col, int width, int height, GameInfo info) {
-		super(info.gameImage);
+	public MenuButtonOLD(int row, int col, int width, int height) {
+		//super();
 		JPanel superPanel = new JPanel();
 		superPanel.setPreferredSize(new Dimension(width+20, height+20));
 		superPanel.add(this);
@@ -40,10 +39,10 @@ public class MenuButton extends JLabel {
 
         //Define behavior for when enter is pushed. This will change
 	    //In subclasses
-        //addKeyListener(getEnterListener());
+        addKeyListener(getEnterListener());
         //Give each button a size and add it to the menu
         setPreferredSize(new Dimension(width, height));
-        /*
+        
 	      //Define movement behavior
 	      addKeyListener(new KeyAdapter() {
 	          @Override
@@ -77,13 +76,9 @@ public class MenuButton extends JLabel {
 	                break;
 	             }
 	          }
-	       });*/
+	       });
 
 	       buttons[row][col] = this;
-	}
-	
-	public static MenuButton[][] GetButtons() {
-		return buttons;
 	}
 	
 	   protected void setActive() {
@@ -92,7 +87,7 @@ public class MenuButton extends JLabel {
         buttons[curRow][curCol].requestFocus();
      	buttons[curRow][curCol].setBorder(redBorder);
 	   }
-	   /*
+	   
 	   protected KeyListener getEnterListener() {
 		   return new KeyAdapter() {
 			      @Override
@@ -102,5 +97,5 @@ public class MenuButton extends JLabel {
 			         }
 			      }
 			   };
-	   }*/
+	   }
 }
