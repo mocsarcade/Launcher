@@ -14,62 +14,27 @@ import javax.swing.JPanel;
 public class MainMenu {// extends JPanel {
 
    //public MainMenu(int row, int col) {
-   public static void main(String[] args) throws IOException {
-      //super(new GridLayout(row, col));
+   public static JPanel createGameMenu() throws IOException {
+	  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
       //Initialize MenuItems
-	  int row=3; //Three rows, including headerMenus
-	  int col=8;
-	  new MenuButton(new MenuButton[row][col]);
 	  
-	  //Make a GameInfo
+	  //Make GameInfo
 	  GameInfo pacMan = new GameInfo(new ImageIcon(ImageIO.read(new File("images/pacman_icon_2.jpg"))));
 
 	  
-	  //Make topButtons for other menus
-	  //This menu is divided into six parts: 3 extra menus and 3 filled spots
-	  int buttonCol = 9;
-	  JPanel headerMenus = new JPanel();
-	  headerMenus.setLayout(new GridLayout(1,col));
-	  headerMenus.add(new MenuButton(0, 0, 100, 50, pacMan));
-	  headerMenus.add(new MenuButton(0, 1, 100, 50, pacMan));
-	  headerMenus.add(new MenuButton(0, 2, 100, 50, pacMan));
-	  //Create blank spots
-      for (int i = 3; i < buttonCol; i++) {
-    	  if(i < col) {
-    		  headerMenus.add(new EmptyItem(0, i, 100, 50, pacMan));
-    	  } else {
-    		  headerMenus.add(new EmptyItem(0, col-1, 100, 50, pacMan));
-    	  }
-          //add(new JPanel());
-       }
-      
       //Games Panel
+	  int rows=2;
+	  int cols=5;
 	  JPanel games = new JPanel();
-	  games.setLayout(new GridLayout(2,col));
-      for (int i = 1; i <row; i++) { //Start at 1 because row 0 is headerMenus
-         for (int j = 0; j < col; j++) {
+	  games.setLayout(new GridLayout(rows,cols));
+      for (int i = 1; i <rows+1; i++) { //Start at 1 because row 0 is headerMenus
+         for (int j = 0; j < cols; j++) {
         	 games.add(new MenuButton(i, j, 100, 200, pacMan));
          }
       }
-      
-      //Place both panels together into the main frame: One on top and one on bottom
-      JFrame pane = new JFrame();
-      pane.setExtendedState(JFrame.MAXIMIZED_BOTH);
-      pane.setLocationRelativeTo(null);
-      pane.setLayout(null);
-      Selector select = new Selector(MenuButton.GetButtons(), pane);
-      select.setBounds(0, 0, 500, 500);
-      pane.add(select);
-      //pane.add(headerMenus, BorderLayout.NORTH);
-      //pane.add(new JSeparator(), BorderLayout.CENTER);
-      //pane.add(b, BorderLayout.SOUTH);
-      pane.add(headerMenus);
-      pane.add(games);
-      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-      headerMenus.setBounds(0, 0, screenSize.width, 100);
-      games.setBounds(0, screenSize.height-250*2-100, col*250, 250*2);
 
-      pane.setVisible(true);
+      games.setBounds(0, screenSize.height-250*2-100, cols*250, 250*2);
+      return games;
       
    }
 }

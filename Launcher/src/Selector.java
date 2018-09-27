@@ -19,27 +19,19 @@ public class Selector extends JPanel {
 	public MenuButton[][] fullMenu;
 	public int curRow;
 	public int curCol;
-	public JFrame holder;
 
-	public Selector(MenuButton[][] buttons, JFrame _parent) {
+	public Selector(MenuButton[][] buttons) {
 		//Save menu setup
 		setFocusable(true);
 		fullMenu = buttons;
-		holder = _parent;
-		
-		//super(new ImageIcon(ImageIO.read(new File("images/pacman_icon_2.jpg"))));
-		//Border defBorder = (BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), new EtchedBorder()));
-		//Border defBorder = (new JButton("temp")).getBorder();
-		//Border defBorder = new EmptyBorder(10,10,10,10);
 		
 		//Set look
 		Border redBorder = BorderFactory.createLineBorder(Color.RED,5);
      	this.setBorder(redBorder);
+     	setOpaque(false);
 		
-		
-
-		curRow = 1;
-	    curCol = 1;
+		curRow = 0;
+	    curCol = 0;
 	    curSelection = buttons[0][0];
 	    LoadSelection();
 
@@ -90,23 +82,11 @@ public class Selector extends JPanel {
 	             }
 	          }
 	       });
-
-	       //buttons[row][col] = this;
 	}
 	
 	public void LoadSelection() {
-		//curSelection.remove(this);
 	    curSelection = fullMenu[curRow][curCol];
-		//curSelection.add(this);
-    	System.out.println("Moving to " + curRow + "," + curCol);
-        //setPreferredSize(new Dimension(curSelection.getWidth(), curSelection.getHeight()));
 	    setBounds(curSelection.GetXPos(),curSelection.GetYPos(),curSelection.getWidth(), curSelection.getHeight());
-    	
-	    //holder.revalidate();
-	    //holder.repaint();
-    	//requestFocus();
-    	//curSelection.revalidate();
-    	//curSelection.repaint();
 	}
 
    protected KeyListener getEnterListener() {
@@ -114,7 +94,7 @@ public class Selector extends JPanel {
 	      @Override
 	      public void keyTyped(KeyEvent e) {
 	         if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-	            ((JButton) e.getComponent()).doClick();
+	            curSelection.activate();
 	         }
 	      }
 	   };
