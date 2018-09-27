@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.*;
 
-public class MenuButton extends JLabel {
+public class MenuButton extends JPanel {
 
 
 	protected static MenuButton[][] buttons;
@@ -25,12 +25,13 @@ public class MenuButton extends JLabel {
 	}
     
 	public MenuButton(int row, int col, int width, int height, GameInfo info) {
-		super(info.gameImage);
-		JPanel superPanel = new JPanel();
-		superPanel.setPreferredSize(new Dimension(width+20, height+20));
-		superPanel.add(this);
+        setPreferredSize(new Dimension(width, height));
+
+        JLabel image = new JLabel(info.gameImage);
+		//image.setPreferredSize(new Dimension(width+20, height+20));
+		add(image);
 		//Border defBorder = (BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), new EtchedBorder()));
-		Border defBorder = (new JButton("temp")).getBorder();
+		//Border defBorder = (new JButton("temp")).getBorder();
 		//Border defBorder = new EmptyBorder(10,10,10,10);
 		
 		
@@ -42,7 +43,6 @@ public class MenuButton extends JLabel {
 	    //In subclasses
         //addKeyListener(getEnterListener());
         //Give each button a size and add it to the menu
-        setPreferredSize(new Dimension(width, height));
         /*
 	      //Define movement behavior
 	      addKeyListener(new KeyAdapter() {
@@ -84,6 +84,14 @@ public class MenuButton extends JLabel {
 	
 	public static MenuButton[][] GetButtons() {
 		return buttons;
+	}
+	
+	public int GetXPos() {
+		return getX()+getParent().getX();
+	}
+	
+	public int GetYPos() {
+		return getY()+getParent().getY();
 	}
 	
 	   protected void setActive() {

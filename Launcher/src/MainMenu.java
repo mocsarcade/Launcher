@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
@@ -43,35 +44,32 @@ public class MainMenu {// extends JPanel {
        }
       
       //Games Panel
-	  JPanel b = new JPanel();
-	  b.setLayout(new GridLayout(2,col));
+	  JPanel games = new JPanel();
+	  games.setLayout(new GridLayout(2,col));
       for (int i = 1; i <row; i++) { //Start at 1 because row 0 is headerMenus
          for (int j = 0; j < col; j++) {
-            b.add(new MenuButton(i, j, 100, 200, pacMan));
+        	 games.add(new MenuButton(i, j, 100, 200, pacMan));
          }
       }
       
       //Place both panels together into the main frame: One on top and one on bottom
       JFrame pane = new JFrame();
-      Insets insets = pane.getInsets();
       pane.setExtendedState(JFrame.MAXIMIZED_BOTH);
       pane.setLocationRelativeTo(null);
       pane.setLayout(null);
+      Selector select = new Selector(MenuButton.GetButtons(), pane);
+      select.setBounds(0, 0, 500, 500);
+      pane.add(select);
       //pane.add(headerMenus, BorderLayout.NORTH);
       //pane.add(new JSeparator(), BorderLayout.CENTER);
       //pane.add(b, BorderLayout.SOUTH);
       pane.add(headerMenus);
-      pane.add(b);
-      Dimension size = headerMenus.getPreferredSize();
-      headerMenus.setBounds(25 + insets.left, 5 + insets.top,
-              size.width, size.height);
-      b.setBounds(insets.left, 205 + insets.top,
-              250*col, 250*2);
-      
+      pane.add(games);
+      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+      headerMenus.setBounds(0, 0, screenSize.width, 100);
+      games.setBounds(0, screenSize.height-250*2-100, col*250, 250*2);
+
       pane.setVisible(true);
       
-      Selector select = new Selector(MenuButton.GetButtons(), pane);
-      pane.add(select);
-      select.requestFocus();
    }
 }

@@ -34,13 +34,14 @@ public class Selector extends JPanel {
 		
 		//Set look
 		Border redBorder = BorderFactory.createLineBorder(Color.RED,5);
-     	buttons[curRow][curCol].setBorder(redBorder);
+     	this.setBorder(redBorder);
 		
 		
 
-		curRow = 0;
-	    curCol = 0;
-	    //LoadSelection();
+		curRow = 1;
+	    curCol = 1;
+	    curSelection = buttons[0][0];
+	    LoadSelection();
 
         //Define behavior for when enter is pushed. This will change
 	    //In subclasses
@@ -94,12 +95,18 @@ public class Selector extends JPanel {
 	}
 	
 	public void LoadSelection() {
+		//curSelection.remove(this);
 	    curSelection = fullMenu[curRow][curCol];
+		//curSelection.add(this);
     	System.out.println("Moving to " + curRow + "," + curCol);
         //setPreferredSize(new Dimension(curSelection.getWidth(), curSelection.getHeight()));
-	    setBounds(curCol*50,curRow*100,curSelection.getWidth(), curSelection.getHeight());
-	    holder.revalidate();
-	    holder.repaint();
+	    setBounds(curSelection.GetXPos(),curSelection.GetYPos(),curSelection.getWidth(), curSelection.getHeight());
+    	
+	    //holder.revalidate();
+	    //holder.repaint();
+    	//requestFocus();
+    	//curSelection.revalidate();
+    	//curSelection.repaint();
 	}
 
    protected KeyListener getEnterListener() {
