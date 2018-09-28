@@ -17,8 +17,6 @@ public class Selector extends JPanel {
 	
 	public MenuButton curSelection;
 	public MenuButton[][] fullMenu;
-	public int curRow;
-	public int curCol;
 
 	public Selector(MenuButton[][] buttons) {
 		//Save menu setup
@@ -29,11 +27,9 @@ public class Selector extends JPanel {
 		Border redBorder = BorderFactory.createLineBorder(Color.RED,5);
      	this.setBorder(redBorder);
      	setOpaque(false);
-		
-		curRow = 0;
-	    curCol = 0;
+     	
 	    curSelection = buttons[0][0];
-	    LoadSelection();
+	    LoadSelection(0, 0);
 
         //Define behavior for when enter is pushed. This will change
 	    //In subclasses
@@ -46,35 +42,31 @@ public class Selector extends JPanel {
 	          public void keyPressed(KeyEvent e) {
 	             switch (e.getKeyCode()) {
 	             case KeyEvent.VK_UP:
-	                if (curRow > 0) {
+	                if (curSelection.curRow > 0) {
 	            		//buttons[curRow][curCol].setBorder(defBorder);
 	            		//buttons[curRow-1][curCol].setActive();
-	                	curRow--;
-	                	LoadSelection();
+	                	LoadSelection(-1, 0);
 	                }
 	                break;
 	             case KeyEvent.VK_DOWN:
-	                if (curRow < buttons.length - 1) {
+	                if (curSelection.curRow < buttons.length - 1) {
 	            		//buttons[curRow][curCol].setBorder(defBorder);
 	            		//buttons[curRow+1][curCol].setActive();
-	                	curRow++;
-	                	LoadSelection();
+	                	LoadSelection(1, 0);
 	                }
 	                break;
 	             case KeyEvent.VK_LEFT:
-	                if (curCol > 0) {
+	                if (curSelection.curCol > 0) {
 	            		//buttons[curRow][curCol].setBorder(defBorder);
 	            		//buttons[curRow][curCol-1].setActive();
-	                	curCol--;
-	                	LoadSelection();
+	                	LoadSelection(0, -1);
 	                }
 	                break;
 	             case KeyEvent.VK_RIGHT:
-	                if (curCol < buttons[curRow].length - 1) {
+	                if (curSelection.curCol < buttons[curSelection.curRow].length - 1) {
 	            		//buttons[curRow][curCol].setBorder(defBorder);
 	            		//buttons[curRow][curCol+1].setActive();
-	                	curCol++;
-	                	LoadSelection();
+	                	LoadSelection(0, 1);
 	                }
 	                break;
 	             default:
@@ -84,8 +76,9 @@ public class Selector extends JPanel {
 	       });
 	}
 	
-	public void LoadSelection() {
-	    curSelection = fullMenu[curRow][curCol];
+	public void LoadSelection(int x, int y) {
+		//The object we are over may have hidden data or a special position, so set selector to be over its true position
+	    curSelection = fullMenu[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef();
 	    setBounds(curSelection.GetXPos(),curSelection.GetYPos(),curSelection.getWidth(), curSelection.getHeight());
 	}
 

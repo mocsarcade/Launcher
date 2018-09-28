@@ -17,8 +17,7 @@ public class GUIMain {
 		  int col=8;
 		  new MenuButton(new MenuButton[row][col]);
 		  
-		  
-		  JPanel headers = CreateHeader();
+
 
 	      
 	      
@@ -27,20 +26,22 @@ public class GUIMain {
 	      pane.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	      pane.setLocationRelativeTo(null);
 	      pane.setLayout(null);
+	      //Open MainMenu
+	      JPanel contentMenu = MainMenu.createMenu();
+	      //Open headerMenu
+		  JPanel headers = CreateHeader(pane, contentMenu);
 	      //Create selector
 	      Selector select = new Selector(MenuButton.GetButtons());
 	      pane.add(select);
 	      //Add header (stays the same the WHOLE TIME)
 	      pane.add(headers);
-	      //Open MainMenu
-	      JPanel gamesMenu = MainMenu.createGameMenu();
 	      
-	      pane.add(gamesMenu);
+	      pane.add(contentMenu);
 
 	      pane.setVisible(true);
 	}
 	
-	public static JPanel CreateHeader() throws IOException {
+	public static JPanel CreateHeader(JFrame pane, JPanel content) throws IOException {
 		  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		  //Create Header
 		  //This menu has 3 buttons 250 wide each with extra components for buffer space
@@ -48,13 +49,13 @@ public class GUIMain {
 		  JPanel headerMenus = new JPanel();
 		  headerMenus.setLayout(new GridLayout(1,buttonCol));
 		  //Browse
-		  GameInfo browse = new GameInfo(new ImageIcon(ImageIO.read(new File("images/main.jpg"))));
+		  ButtonInfo browse = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/main.jpg"))), new OpenMainMenu(pane, content));
 		  headerMenus.add(new MenuButton(0, 0, 250, 100, browse));
 		  //Controls
-		  GameInfo controls = new GameInfo(new ImageIcon(ImageIO.read(new File("images/keybinds.jpg"))));
+		  ButtonInfo controls = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/keybinds.jpg"))), new OpenMainMenu(pane, content));
 		  headerMenus.add(new MenuButton(0, 1, 250, 100, controls));
 		  //Add Game
-		  GameInfo addGame = new GameInfo(new ImageIcon(ImageIO.read(new File("images/addgame.jpg"))));
+		  ButtonInfo addGame = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/addgame.jpg"))), new OpenMainMenu(pane, content));
 		  headerMenus.add(new MenuButton(0, 2, 250, 100, addGame));
 		  //Create blank spots
 	      for (int i = 3; i < buttonCol; i++) {

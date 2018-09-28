@@ -8,7 +8,7 @@ import javax.swing.border.*;
 
 public class MenuButton extends JPanel {
 
-
+	protected ButtonInfo info;
 	protected static MenuButton[][] buttons;
     public int curRow;
     public int curCol;
@@ -18,16 +18,17 @@ public class MenuButton extends JPanel {
 		buttons = _buttons;
 	}
     
-	public MenuButton(int row, int col, int width, int height, GameInfo info) {
+	public MenuButton(int row, int col, int width, int height, ButtonInfo thisInfo) {
         setPreferredSize(new Dimension(width, height));
 
-        JLabel image = new JLabel(info.gameImage);
+        JLabel image = new JLabel(thisInfo.gameImage);
 		add(image);
 
 		curRow = row;
 	    curCol = col;
 
 	    buttons[row][col] = this;
+	    info = thisInfo;
 	}
 	
 	public static MenuButton[][] GetButtons() {
@@ -42,8 +43,11 @@ public class MenuButton extends JPanel {
 		return getY()+getParent().getY();
 	}
 	
+	public MenuButton GetButtonRef() {
+		return this;
+	}
+	
 	public void activate() {
-		//Empty for now. Subclasses will open a game or open a new menu
-		System.out.println("You clicked me!");
+		info.activate();
 	}
 }
