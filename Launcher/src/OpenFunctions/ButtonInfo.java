@@ -1,3 +1,4 @@
+package OpenFunctions;
 import javax.swing.Icon;
 
 public class ButtonInfo {

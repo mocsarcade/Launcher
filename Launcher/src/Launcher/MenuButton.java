@@ -1,3 +1,4 @@
+package Launcher;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -5,6 +6,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.*;
+
+import OpenFunctions.ButtonInfo;
 
 public class MenuButton extends JPanel {
 

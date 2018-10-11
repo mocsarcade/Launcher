@@ -1,3 +1,4 @@
+package Launcher;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -8,6 +9,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import OpenFunctions.*;
 
 public class GUIMain {
 
