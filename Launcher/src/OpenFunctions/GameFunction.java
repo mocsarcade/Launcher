@@ -1,8 +1,9 @@
 package OpenFunctions;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Scanner;
+
+import Launcher.Selector;
 
 public class GameFunction extends Function {
 	
@@ -16,7 +17,11 @@ public class GameFunction extends Function {
 	public void activate() {
 		try {
 			Process proc = Runtime.getRuntime().exec(runCommand);
-
+			try {
+				proc.waitFor();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 			/*
 			int exitValue = proc.waitFor();
 			if (exitValue != 0) {

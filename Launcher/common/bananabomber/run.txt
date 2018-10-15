@@ -1,0 +1,1 @@
+java -Djava.library.path="natives/windows" -jar bananabomber.jar

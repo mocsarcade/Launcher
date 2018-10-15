@@ -1,1 +1,1 @@
-java -Djava.library.path="C:\Users\Connor\Documents\My Games\bananabomber\natives/windows" -jar "C:\Users\Connor\Documents\My Games\bananabomber\bananabomber.jar"
+java -Djava.library.path="C:\Users\user\git\Launcher\Launcher\common\bananabomber\natives/windows" -jar "C:\Users\user\git\Launcher\Launcher\common\bananabomber\bananabomber.jar"
