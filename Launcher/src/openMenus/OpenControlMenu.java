@@ -1,9 +1,12 @@
-package OpenFunctions;
+package openMenus;
 
 import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import Launcher.ControlsMenu;
+import OpenFunctions.Function;
 
 public class OpenControlMenu extends Function {
 	
@@ -19,12 +22,10 @@ public class OpenControlMenu extends Function {
 		try {
 			//Get rid of old menu
 			contentPane.removeAll();
-			mainFrame.remove(contentPane);
 			//Make and add new menu
-			contentPane = ControlsMenu.createMenu();
-			mainFrame.add(contentPane);
-			contentPane.revalidate();
-			contentPane.repaint();
+			ControlsMenu.createMenu(contentPane);
+			mainFrame.revalidate();
+			mainFrame.repaint();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

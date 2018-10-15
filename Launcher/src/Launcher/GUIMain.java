@@ -11,13 +11,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import OpenFunctions.*;
+import openMenus.ButtonInfo;
+import openMenus.EmptyItem;
+import openMenus.MenuButton;
+import openMenus.OpenControlMenu;
+import openMenus.OpenMainMenu;
 
 public class GUIMain {
 
 	public static void main(String[] args) throws IOException {
 	      //Initialize Static Array of buttons on screen:
 		  int row=3; //Three rows, including headerMenus
-		  int col=8;
+		  int col=9;
 		  new MenuButton(new MenuButton[row][col]);
 		  
 
@@ -30,7 +35,8 @@ public class GUIMain {
 	      pane.setLocationRelativeTo(null);
 	      pane.setLayout(null);
 	      //Open MainMenu
-	      JPanel contentMenu = MainMenu.createMenu();
+	      JPanel contentMenu = new JPanel();
+	      MainMenu.createMenu(contentMenu);
 	      //Open headerMenu
 		  JPanel headers = CreateHeader(pane, contentMenu);
 	      //Create selector
@@ -55,7 +61,7 @@ public class GUIMain {
 		  ButtonInfo browse = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/main.jpg"))), new OpenMainMenu(pane, content));
 		  headerMenus.add(new MenuButton(0, 0, 250, 100, browse));
 		  //Controls
-		  ButtonInfo controls = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/keybinds.jpg"))), new OpenMainMenu(pane, content));
+		  ButtonInfo controls = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/keybinds.jpg"))), new OpenControlMenu(pane, content));
 		  headerMenus.add(new MenuButton(0, 1, 250, 100, controls));
 		  //Add Game
 		  ButtonInfo addGame = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/addgame.jpg"))), new OpenMainMenu(pane, content));

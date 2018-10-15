@@ -14,12 +14,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import openMenus.MenuButton;
+
 public class Selector extends JPanel {
 	
 	public MenuButton curSelection;
 	public MenuButton[][] fullMenu;
+	private KeyListener InputListener;
+	
+	private static Selector singleton;
 
 	public Selector(MenuButton[][] buttons) {
+		singleton = this;
 		//Save menu setup
 		setFocusable(true);
 		fullMenu = buttons;
@@ -29,69 +35,65 @@ public class Selector extends JPanel {
      	this.setBorder(redBorder);
      	setOpaque(false);
      	
+     	//Start selector at 0,0
 	    curSelection = buttons[0][0];
 	    LoadSelection(0, 0);
 
-        //Define behavior for when enter is pushed. This will change
-	    //In subclasses
-        addKeyListener(getEnterListener());
-        //Give each button a size and add it to the menu
-        
-	      //Define movement behavior
-	      addKeyListener(new KeyAdapter() {
-	          @Override
-	          public void keyPressed(KeyEvent e) {
-	             switch (e.getKeyCode()) {
-	             case KeyEvent.VK_UP:
-	                if (curSelection.curRow > 0) {
-	            		//buttons[curRow][curCol].setBorder(defBorder);
-	            		//buttons[curRow-1][curCol].setActive();
-	                	LoadSelection(-1, 0);
-	                }
-	                break;
-	             case KeyEvent.VK_DOWN:
-	                if (curSelection.curRow < buttons.length - 1) {
-	            		//buttons[curRow][curCol].setBorder(defBorder);
-	            		//buttons[curRow+1][curCol].setActive();
-	                	LoadSelection(1, 0);
-	                }
-	                break;
-	             case KeyEvent.VK_LEFT:
-	                if (curSelection.curCol > 0) {
-	            		//buttons[curRow][curCol].setBorder(defBorder);
-	            		//buttons[curRow][curCol-1].setActive();
-	                	LoadSelection(0, -1);
-	                }
-	                break;
-	             case KeyEvent.VK_RIGHT:
-	                if (curSelection.curCol < buttons[curSelection.curRow].length - 1) {
-	            		//buttons[curRow][curCol].setBorder(defBorder);
-	            		//buttons[curRow][curCol+1].setActive();
-	                	LoadSelection(0, 1);
-	                }
-	                break;
-	             default:
-	                break;
-	             }
-	          }
-	       });
+        //Define behavior for when and key is pushed. This will change when the controlSet is changed
+		InputListener = getListener();
+        addKeyListener(InputListener);
 	}
 	
 	public void LoadSelection(int x, int y) {
+		//fullMenu = MenuButton.GetButtons();
+		//System.out.println(fullMenu[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef());
 		//The object we are over may have hidden data or a special position, so set selector to be over its true position
 	    curSelection = fullMenu[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef();
-	    setBounds(curSelection.GetXPos(),curSelection.GetYPos(),curSelection.getWidth(), curSelection.getHeight());
+	    setBounds(curSelection.GetXPos()+5,curSelection.GetYPos(),curSelection.GetTrueWidth()+5, curSelection.GetTrueHeight()+5);
+	}
+	
+	public static void refocus() {
+		singleton.requestFocus();
+	}
+	
+	public static void reloadKeys() {
+		singleton.RELOAD_KEY_LISTENER();
+	}
+	public void RELOAD_KEY_LISTENER() {
+		removeKeyListener(InputListener);
+		InputListener = getListener();
+        addKeyListener(InputListener);
 	}
 
-   protected KeyListener getEnterListener() {
-	   return new KeyAdapter() {
-	      @Override
-	      public void keyTyped(KeyEvent e) {
-	         if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-	            curSelection.activate();
-	         }
-	      }
-	   };
+   protected KeyListener getListener() {
+      //Define key behavior
+      return new KeyAdapter() {
+          @Override
+          public void keyPressed(KeyEvent e) {
+             if(InputManager.getManager().getKeyNum('U',0) == e.getKeyCode()) {
+                 if (curSelection.curRow > 0) {
+                 	LoadSelection(-1, 0);
+                 }
+             }
+             else if(InputManager.getManager().getKeyNum('D',0) == e.getKeyCode()) {
+                 if (curSelection.curRow < fullMenu.length - 1) {
+                 	LoadSelection(1, 0);
+                 }
+             }
+             else if(InputManager.getManager().getKeyNum('L',0) == e.getKeyCode()) {
+                 if (curSelection.curCol > 0) {
+                 	LoadSelection(0, -1);
+                 }
+             }
+             else if(InputManager.getManager().getKeyNum('R',0) == e.getKeyCode()) {
+                 if (curSelection.curCol < fullMenu[curSelection.curRow].length - 1) {
+                 	LoadSelection(0, 1);
+                 }
+             } else if(InputManager.getManager().getKeyNum('A',0) == e.getKeyCode()) {
+             	 curSelection.activate();
+             }
+          }
+       };
    }
 	
 }

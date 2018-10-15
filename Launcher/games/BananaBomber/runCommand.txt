@@ -1,0 +1,1 @@
+java -Djava.library.path="C:\Users\Connor\Documents\My Games\bananabomber\natives/windows" -jar "C:\Users\Connor\Documents\My Games\bananabomber\bananabomber.jar"

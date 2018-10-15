@@ -1,5 +1,7 @@
-package OpenFunctions;
+package openMenus;
 import javax.swing.Icon;
+
+import OpenFunctions.Function;
 
 public class ButtonInfo {
 	
