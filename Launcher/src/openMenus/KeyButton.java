@@ -1,13 +1,5 @@
 package openMenus;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.KeyListener;
-
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.*;
 
 import Launcher.InputManager;
 

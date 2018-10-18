@@ -49,11 +49,22 @@ public class Selector extends JPanel {
 		//System.out.println(fullMenu[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef());
 		//The object we are over may have hidden data or a special position, so set selector to be over its true position
 	    curSelection = fullMenu[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef();
-	    setBounds(curSelection.GetXPos()+5,curSelection.GetYPos(),curSelection.GetTrueWidth()+5, curSelection.GetTrueHeight()+5);
+	    setBounds(curSelection.GetXPos(),curSelection.GetYPos(),(int) curSelection.getSize().getWidth(), (int) curSelection.getSize().getHeight());
+	}
+	
+	public void LoadSelection(MenuButton select) {
+		//fullMenu = MenuButton.GetButtons();
+		//System.out.println(fullMenu[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef());
+		//The object we are over may have hidden data or a special position, so set selector to be over its true position
+	    curSelection = select;
+	    setBounds(curSelection.GetXPos(),curSelection.GetYPos(),(int) curSelection.getSize().getWidth(), (int) curSelection.getSize().getHeight());
 	}
 	
 	public static void refocus() {
 		singleton.requestFocus();
+	}
+	public static void revalidateSelector() {
+		singleton.LoadSelection(singleton.curSelection);
 	}
 	
 	public static void reloadKeys() {

@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.*;
 
+import Launcher.Selector;
+
 public class MenuButton extends JPanel {
 
 	protected ButtonInfo info;
@@ -15,9 +17,6 @@ public class MenuButton extends JPanel {
     public int curRow;
     public int curCol;
     protected JLabel label;
-
-    protected int trueWidth;
-    protected int trueHeight;
     
 	public MenuButton(MenuButton[][] _buttons) {
 		//First menuItem initializes buttons
@@ -37,8 +36,6 @@ public class MenuButton extends JPanel {
 
 		curRow = row;
 	    curCol = col;
-	    trueWidth = width;
-	    trueHeight = height;
 
 	    buttons[row][col] = this;
 	    info = thisInfo;
@@ -47,14 +44,12 @@ public class MenuButton extends JPanel {
 		if(thisInfo.openCommand instanceof KeyListener)
 			addKeyListener((KeyListener) thisInfo.openCommand);
 	}
-	
+
 	public static MenuButton[][] GetButtons() {
 		return buttons;
 	}
 	
-	public void refresh() {
-        setPreferredSize(new Dimension(trueWidth, trueHeight));
-	}
+	public void refresh() {}
 	
 	public int GetXPos() {
 		return getX()+getParent().getX();
@@ -66,14 +61,6 @@ public class MenuButton extends JPanel {
 	
 	public MenuButton GetButtonRef() {
 		return this;
-	}
-	
-	public int GetTrueWidth() {
-		return trueWidth;
-	}
-	
-	public int GetTrueHeight() {
-		return trueHeight;
 	}
 	
 	public void activate() {

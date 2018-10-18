@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Launcher.ControlsMenu;
+import Launcher.Selector;
 import OpenFunctions.Function;
 
 public class OpenControlMenu extends Function {

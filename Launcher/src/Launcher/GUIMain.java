@@ -1,5 +1,7 @@
 package Launcher;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.io.File;
@@ -25,13 +27,11 @@ public class GUIMain {
 		  int col=9;
 		  new MenuButton(new MenuButton[row][col]);
 		  
-
-
-	      
 	      
 	      //Place both panels together into the main frame: One on top and one on bottom
-	      JFrame pane = new JFrame();
+	      JFrame pane = new MainFrame();
 	      pane.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	      /*
 	      pane.setLocationRelativeTo(null);
 	      pane.setLayout(null);
 	      //Open MainMenu
@@ -46,7 +46,32 @@ public class GUIMain {
 	      pane.add(headers);
 	      
 	      pane.add(contentMenu);
+	      */
+	      
+	      pane.setLayout(new GridBagLayout());
+	      JPanel contentMenu = new JPanel();
+	      MainMenu.createMenu(contentMenu);
+		  JPanel headers = CreateHeader(pane, contentMenu);
+	      Selector select = new Selector(MenuButton.GetButtons());
+	      
+	      //Create Selector
+	      GridBagConstraints c = new GridBagConstraints();
+	      pane.add(select);
+	      //Add header (stays the same the WHOLE TIME)
+	      c.gridx = 0;
+	      c.gridy = 0;
+	      c.weighty = 0.1;
+	      c.fill = GridBagConstraints.HORIZONTAL;
+	      pane.add(headers, c);
 
+	      GridBagConstraints c2 = new GridBagConstraints();
+	      c2.gridx = 0;
+	      c2.gridy = 1;
+	      c2.weighty = 0.9;
+	      c2.fill = GridBagConstraints.BOTH;
+	      pane.add(contentMenu, c2);
+	      
+	      pane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      pane.setVisible(true);
 	}
 	
@@ -70,11 +95,9 @@ public class GUIMain {
 	      for (int i = 3; i < buttonCol; i++) {
 	    	  if(i < buttonCol) {
 	    		  headerMenus.add(new EmptyItem(0, i, 250, 50, browse));
-	    	  } else {
-	    		  headerMenus.add(new EmptyItem(0, buttonCol-1, 250, 50, browse));
 	    	  }
 	       }
-	      headerMenus.setBounds(0, 0, screenSize.width, 110);
+	      //headerMenus.setBounds(0, 0, screenSize.width, 110);
 	      return headerMenus;
 	}
 

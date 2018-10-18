@@ -1,16 +1,14 @@
 package Launcher;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import OpenFunctions.ChangeKey;
 import openMenus.ButtonInfo;
@@ -20,8 +18,6 @@ public class ControlsMenu {// extends JPanel {
 	
 	private static final int KEY_WIDTH = 150;
 	private static final int KEY_HEIGHT = 155;
-	private static final int H_GAP = 25;
-	private static final int V_GAP = 125;
 
    //public MainMenu(int row, int col) {
    public static void createMenu(JPanel games) throws IOException {
@@ -29,7 +25,8 @@ public class ControlsMenu {// extends JPanel {
       //Initialize MenuItems
 	  int rows=2;
 	  int cols=9;
-	  games.setLayout(new GridLayout(rows,cols,(screenSize.width-cols*KEY_WIDTH)/(cols-1), (250*2-100-(KEY_HEIGHT*2))));
+	  games.setLayout(new GridLayout(rows,cols,(screenSize.width-cols*KEY_WIDTH)/(cols-1), (int) (screenSize.height*0.9-(KEY_HEIGHT*2))/6 ));
+	  //games.setBorder(new EmptyBorder( (int) (screenSize.height*0.9-(KEY_HEIGHT*2))/6, 0, (int) (screenSize.height*0.9-(KEY_HEIGHT*2))/6, 0));
 	  //Up
       for (int i = 1; i <rows+1; i++) { //Start at 1 because row 0 is headerMenus
     	KeyButton thisButton =
@@ -133,6 +130,5 @@ public class ControlsMenu {// extends JPanel {
       
       games.setBounds(0, screenSize.height-250*2-100, screenSize.width, 250*2+100);
       //return games;
-      
    }
 }

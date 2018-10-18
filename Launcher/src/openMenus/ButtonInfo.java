@@ -1,6 +1,6 @@
 package openMenus;
-import javax.swing.Icon;
 
+import javax.swing.Icon;
 import OpenFunctions.Function;
 
 public class ButtonInfo {
@@ -12,7 +12,12 @@ public class ButtonInfo {
 		gameImage = image;
 		openCommand = command;
 	}
-	
+
+	public ButtonInfo() {
+		gameImage = null;
+		openCommand = null;
+	}
+
 	public void activate() {
 		openCommand.activate();
 	}
