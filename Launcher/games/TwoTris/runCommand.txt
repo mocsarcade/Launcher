@@ -1,1 +1,0 @@
-java -jar "C:\Users\user\git\Launcher\Launcher\common\twotris/twotris.v2.jar"
