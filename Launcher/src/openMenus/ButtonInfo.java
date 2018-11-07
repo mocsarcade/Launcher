@@ -21,5 +21,9 @@ public class ButtonInfo {
 	public void activate() {
 		openCommand.activate();
 	}
+	
+	public ButtonInfo copyInfo() {
+		return new ButtonInfo(gameImage, openCommand);
+	}
 
 }

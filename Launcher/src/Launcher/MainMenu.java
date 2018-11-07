@@ -18,8 +18,18 @@ import OpenFunctions.GameFunction;
 import openMenus.ButtonInfo;
 import openMenus.EmptyItem;
 import openMenus.MenuButton;
+import openMenus.GameButton;
 
 public class MainMenu {// extends JPanel {
+	
+	//public static int activeX;
+	//public static int activeY;
+	public static MenuButton leftButton;
+	public static MenuButton centerButton;
+	public static MenuButton rightButton;
+	public static final int LEFT_COL = 0;
+	public static final int MIDDLE_COL = 1;
+	public static final int RIGHT_COL = 2;
 
    //public MainMenu(int row, int col) {
    public static void createMenu(JPanel games) throws IOException {
@@ -38,10 +48,23 @@ public class MainMenu {// extends JPanel {
 				  new GameFunction(gameName)));
 	  }
 	  in.close();
-	  Iterator<ButtonInfo> infoIter = gameInfo.iterator();
+	  //Iterator<ButtonInfo> infoIter = gameInfo.iterator();
 	  
+	  int active = 0; int cols = 2;
+	  leftButton = new GameButton(1, LEFT_COL, screenSize.width/cols - 10, 250, GetLeft(gameInfo, active));
+	  centerButton = new GameButton(1, MIDDLE_COL, screenSize.width/cols - 10, 250, GetCenter(gameInfo, active));
+	  rightButton = new GameButton(1, RIGHT_COL, screenSize.width/cols - 10, 250, GetRight(gameInfo, active));
+	  
+	  games.setLayout(null);
+	  games.add(leftButton);
+	  leftButton.setBounds(0, 0, 250, 250);
+	  games.add(centerButton);
+	  centerButton.setBounds(300, 0, 250, 250);
+	  games.add(rightButton);
+	  rightButton.setBounds(600, 0, 250, 250);
 	  
       //Games Panel
+	  /*
 	  int rows=2;
 	  int cols=(int) screenSize.width/255;
 	  //games.setLayout(new GridLayout(rows,cols,(screenSize.width-cols*250)/(cols-1), (int) (screenSize.getSize().getHeight()-250*rows)/(rows-1) ));
@@ -56,11 +79,57 @@ public class MainMenu {// extends JPanel {
 	    		  games.add(new EmptyItem(i, j, screenSize.width/cols - 10, 250, new ButtonInfo()));
         	 }
          }
-      }
+      }*/
 
       //games.setBounds(0, screenSize.height-250*2-100, screenSize.width, 250*2+100);
       //games.setBounds(0, screenSize.height-250*2-100, 250*Math.min(cols, counter), 250*2+100);
       //return games;
       
+   }
+   
+   public static void UpdateGames(MenuButton newCenter) {
+	   
+   }
+   
+   public static ButtonInfo GetLeft(List<ButtonInfo> gameInfo, int active) {
+	   //If Left button is out of bounds, loop around list
+	   if(active-1 < 0) {
+		   return gameInfo.get(active - 1 + gameInfo.size());
+	   }
+	   //If Left button is out of bounds, loop around list
+	   else if(active-1 >= gameInfo.size()) {
+		   return gameInfo.get(active - 1 - gameInfo.size());
+	   }
+	   else {
+		   return gameInfo.get(active - 1);
+	   }
+   }
+   
+   public static ButtonInfo GetCenter(List<ButtonInfo> gameInfo, int active) {
+	   //If Center button is out of bounds, loop around list
+	   if(active < 0) {
+		   return gameInfo.get(active + gameInfo.size());
+	   }
+	   //If Left button is out of bounds, loop around list
+	   else if(active >= gameInfo.size()) {
+		   return gameInfo.get(active - gameInfo.size());
+	   }
+	   else {
+		   return gameInfo.get(active);
+	   }
+   }
+   
+   public static ButtonInfo GetRight(List<ButtonInfo> gameInfo, int active) {
+	   //If Center button is out of bounds, loop around list
+	   if(active + 1 < 0) {
+		   return gameInfo.get(active + 1 + gameInfo.size());
+	   }
+	   //If Left button is out of bounds, loop around list
+	   else if(active + 1 >= gameInfo.size()) {
+		   return gameInfo.get(active + 1 - gameInfo.size());
+	   }
+	   else {
+		   return gameInfo.get(active + 1);
+	   }
    }
 }

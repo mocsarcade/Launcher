@@ -44,6 +44,38 @@ public class MenuButton extends JPanel {
 		if(thisInfo.openCommand instanceof KeyListener)
 			addKeyListener((KeyListener) thisInfo.openCommand);
 	}
+    
+	/**
+	 * Copy Constructor
+	 * @param row  the row on the button array this copied button will be on
+	 * @param col  the column on the button array this copied button will be on
+	 * @param oldButton  the button being copied
+	 */
+	public MenuButton(int row, int col, MenuButton oldButton) {
+		//Set size and position
+        setPreferredSize(new Dimension(oldButton.getWidth(), oldButton.getHeight()));
+
+	    info = oldButton.copyInfo();
+        label = new JLabel(info.gameImage);
+		add(label);
+
+		curRow = row;
+	    curCol = col;
+
+	    buttons[row][col] = this;
+	    
+	    //If the openCommand requires taking keyboard input, add it to this button as well
+		if(info.openCommand instanceof KeyListener)
+			addKeyListener((KeyListener) info.openCommand);
+	}
+	
+	public void setPosition(int row, int col) {
+	    buttons[row][col] = this;
+	}
+	
+	public ButtonInfo copyInfo() {
+		return info.copyInfo();
+	}
 
 	public static MenuButton[][] GetButtons() {
 		return buttons;

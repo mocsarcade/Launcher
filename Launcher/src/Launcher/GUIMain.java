@@ -49,8 +49,10 @@ public class GUIMain {
 	      */
 	      
 	      pane.setLayout(new GridBagLayout());
+	      //Create Game Menu
 	      JPanel contentMenu = new JPanel();
 	      MainMenu.createMenu(contentMenu);
+	      //Create Header menu
 		  JPanel headers = CreateHeader(pane, contentMenu);
 	      Selector select = new Selector(MenuButton.GetButtons());
 	      
