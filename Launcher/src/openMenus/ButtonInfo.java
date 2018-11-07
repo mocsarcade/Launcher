@@ -7,10 +7,12 @@ public class ButtonInfo {
 	
 	public Icon gameImage;
 	public Function openCommand;
+	public int gameNum;
 	
-	public ButtonInfo(Icon image, Function command) {
+	public ButtonInfo(Icon image, Function command, int gameID) {
 		gameImage = image;
 		openCommand = command;
+		gameNum = gameID;
 	}
 
 	public ButtonInfo() {
@@ -23,7 +25,7 @@ public class ButtonInfo {
 	}
 	
 	public ButtonInfo copyInfo() {
-		return new ButtonInfo(gameImage, openCommand);
+		return new ButtonInfo(gameImage, openCommand, gameNum);
 	}
 
 }

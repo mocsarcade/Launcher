@@ -2,6 +2,8 @@ package Launcher;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.Timer;
 
 import OpenFunctions.GameFunction;
 import openMenus.ButtonInfo;
@@ -30,8 +33,11 @@ public class MainMenu {// extends JPanel {
 	public static final int LEFT_COL = 0;
 	public static final int MIDDLE_COL = 1;
 	public static final int RIGHT_COL = 2;
+	public static final int ROW = 1;
 	
 	public static final int IMAGE_SIZE = 500;
+	
+	public static int active = 1;
 
    //public MainMenu(int row, int col) {
    public static void createMenu(JPanel games) throws IOException {
@@ -43,28 +49,30 @@ public class MainMenu {// extends JPanel {
       List<ButtonInfo> gameInfo = new ArrayList<ButtonInfo>();
 	  //Load all games and place in a LIST of GameFunction objects
 	  Scanner in = new Scanner(new File("games/allGames.txt"));
+	  int gameNum = 0;
 	  while(in.hasNext()) {
 		  String gameName = in.next().trim();
 		  gameInfo.add(new ButtonInfo(
 				  new ImageIcon(ImageIO.read(new File("games/" + gameName + "/image.jpg"))),
-				  new GameFunction(gameName)));
+				  new GameFunction(gameName)),
+				  gameNum);
+		  gameNum++;
 	  }
 	  in.close();
 	  //Iterator<ButtonInfo> infoIter = gameInfo.iterator();
 	  
-	  int active = 0; int cols = 2;
-	  leftButton = new GameButton(1, LEFT_COL, screenSize.width/cols - 10, 250, GetLeft(gameInfo, active));
-	  centerButton = new GameButton(1, MIDDLE_COL, screenSize.width/cols - 10, 250, GetCenter(gameInfo, active));
-	  rightButton = new GameButton(1, RIGHT_COL, screenSize.width/cols - 10, 250, GetRight(gameInfo, active));
+	  leftButton = new GameButton(ROW, LEFT_COL, screenSize.width/(ROW+1) - 10, 250, GetLeft(gameInfo, active));
+	  centerButton = new GameButton(ROW, MIDDLE_COL, screenSize.width/(ROW+1) - 10, 250, GetCenter(gameInfo, active));
+	  rightButton = new GameButton(ROW, RIGHT_COL, screenSize.width/(ROW+1) - 10, 250, GetRight(gameInfo, active));
 	  
 	  games.setLayout(null);
       games.setBounds(0, 100, screenSize.width, screenSize.height-100);
 	  games.add(leftButton);
-	  leftButton.setBounds(250+125-(IMAGE_SIZE/2) - (IMAGE_SIZE+100), (games.getHeight()/2)-IMAGE_SIZE, IMAGE_SIZE, IMAGE_SIZE);
+	  leftButton.setBounds(250+125-(IMAGE_SIZE/2) - (IMAGE_SIZE+100), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
 	  games.add(centerButton);
-	  centerButton.setBounds(250+125-(IMAGE_SIZE/2), (games.getHeight()/2)-IMAGE_SIZE, IMAGE_SIZE, IMAGE_SIZE); //250 is the width of the header buttons
+	  centerButton.setBounds(250+125-(IMAGE_SIZE/2), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE); //250 is the width of the header buttons
 	  games.add(rightButton);
-	  rightButton.setBounds(250+125-(IMAGE_SIZE/2) + (IMAGE_SIZE+100), (games.getHeight()/2)-IMAGE_SIZE, IMAGE_SIZE, IMAGE_SIZE);
+	  rightButton.setBounds(250+125-(IMAGE_SIZE/2) + (IMAGE_SIZE+100), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
 	  
       //Games Panel
 	  /*
@@ -91,6 +99,53 @@ public class MainMenu {// extends JPanel {
    }
    
    public static void UpdateGames(MenuButton newCenter) {
+	   final int MOVE_RATE = 5;
+	   //Create timer to move games over time
+	   final Timer moveGames = new Timer(1, new ActionListener() {
+		   public void actionPerformed(ActionEvent evt) {
+			   int activeX = 250+125-(IMAGE_SIZE/2);
+			   if(newCenter.getX() > activeX) {
+				   leftButton.setBounds(leftButton.getX()-MOVE_RATE, leftButton.getY(), leftButton.getWidth(), leftButton.getHeight());
+				   centerButton.setBounds(centerButton.getX()-MOVE_RATE, centerButton.getY(), centerButton.getWidth(), centerButton.getHeight());
+				   rightButton.setBounds(rightButton.getX()-MOVE_RATE, rightButton.getY(), rightButton.getWidth(), rightButton.getHeight());
+			   }
+			   else if(newCenter.getX() < activeX) {
+				   leftButton.setBounds(leftButton.getX()+MOVE_RATE, leftButton.getY(), leftButton.getWidth(), leftButton.getHeight());
+				   centerButton.setBounds(centerButton.getX()+MOVE_RATE, centerButton.getY(), centerButton.getWidth(), centerButton.getHeight());
+				   rightButton.setBounds(rightButton.getX()+MOVE_RATE, rightButton.getY(), rightButton.getWidth(), rightButton.getHeight());
+			   } else {
+				   if(newCenter.equals(leftButton)) {
+					   //Once movement is complete, reset each button to its position
+					   leftButton.setPosition(MIDDLE_COL, ROW);
+					   centerButton.setPosition(RIGHT_COL, ROW);
+					   //Update active
+					   active--;
+					   if(active < 0) {
+						   active = ;
+					   }
+					   //Destroy offscreen Game
+					   GUIMain.contentMenu.remove(rightButton);
+					   rightButton = centerButton;
+					   centerButton = leftButton;
+					   //Create replacement game
+					   
+				   } else if(newCenter.equals(rightButton)) {
+					   //Once movement is complete, reset each button to its position
+					   rightButton.setPosition(MIDDLE_COL, ROW);
+					   centerButton.setPosition(LEFT_COL, ROW);
+					   //Update active
+					   
+					   //Destroy offscreen Game
+					   
+					   //Create replacement game
+					   
+				   }
+				   ((Timer)evt.getSource()).stop();
+			   }
+		   }
+	   });
+	   moveGames.start();
+	   /*
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	   int activeX = 250+125-(IMAGE_SIZE/2);
 	   while(newCenter.getX() != activeX) {
@@ -106,7 +161,7 @@ public class MainMenu {// extends JPanel {
 		   }
 		   //Repainting Not Working. Perhaps make this background process?
 		   GUIMain.contentMenu.revalidate();
-	   }
+	   }*/
    }
    
    public static ButtonInfo GetLeft(List<ButtonInfo> gameInfo, int active) {
