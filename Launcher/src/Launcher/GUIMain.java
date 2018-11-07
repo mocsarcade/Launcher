@@ -20,6 +20,10 @@ import openMenus.OpenControlMenu;
 import openMenus.OpenMainMenu;
 
 public class GUIMain {
+	
+	public static JFrame pane;
+	public static JPanel contentMenu;
+	//public static JFrame pane;
 
 	public static void main(String[] args) throws IOException {
 	      //Initialize Static Array of buttons on screen:
@@ -29,7 +33,7 @@ public class GUIMain {
 		  
 	      
 	      //Place both panels together into the main frame: One on top and one on bottom
-	      JFrame pane = new MainFrame();
+	      pane = new MainFrame();
 	      pane.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	      /*
 	      pane.setLocationRelativeTo(null);
@@ -50,7 +54,7 @@ public class GUIMain {
 	      
 	      pane.setLayout(new GridBagLayout());
 	      //Create Game Menu
-	      JPanel contentMenu = new JPanel();
+	      contentMenu = new JPanel();
 	      MainMenu.createMenu(contentMenu);
 	      //Create Header menu
 		  JPanel headers = CreateHeader(pane, contentMenu);
@@ -84,6 +88,7 @@ public class GUIMain {
 		  int buttonCol = screenSize.width/250;
 		  JPanel headerMenus = new JPanel();
 		  headerMenus.setLayout(new GridLayout(1,buttonCol));
+		  headerMenus.setPreferredSize(new Dimension(screenSize.width, 100));
 		  //Browse
 		  ButtonInfo browse = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/main.jpg"))), new OpenMainMenu(pane, content));
 		  headerMenus.add(new MenuButton(0, 0, 250, 100, browse));

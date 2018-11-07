@@ -30,6 +30,8 @@ public class MainMenu {// extends JPanel {
 	public static final int LEFT_COL = 0;
 	public static final int MIDDLE_COL = 1;
 	public static final int RIGHT_COL = 2;
+	
+	public static final int IMAGE_SIZE = 500;
 
    //public MainMenu(int row, int col) {
    public static void createMenu(JPanel games) throws IOException {
@@ -56,12 +58,13 @@ public class MainMenu {// extends JPanel {
 	  rightButton = new GameButton(1, RIGHT_COL, screenSize.width/cols - 10, 250, GetRight(gameInfo, active));
 	  
 	  games.setLayout(null);
+      games.setBounds(0, 100, screenSize.width, screenSize.height-100);
 	  games.add(leftButton);
-	  leftButton.setBounds(0, 0, 250, 250);
+	  leftButton.setBounds(250+125-(IMAGE_SIZE/2) - (IMAGE_SIZE+100), (games.getHeight()/2)-IMAGE_SIZE, IMAGE_SIZE, IMAGE_SIZE);
 	  games.add(centerButton);
-	  centerButton.setBounds(300, 0, 250, 250);
+	  centerButton.setBounds(250+125-(IMAGE_SIZE/2), (games.getHeight()/2)-IMAGE_SIZE, IMAGE_SIZE, IMAGE_SIZE); //250 is the width of the header buttons
 	  games.add(rightButton);
-	  rightButton.setBounds(600, 0, 250, 250);
+	  rightButton.setBounds(250+125-(IMAGE_SIZE/2) + (IMAGE_SIZE+100), (games.getHeight()/2)-IMAGE_SIZE, IMAGE_SIZE, IMAGE_SIZE);
 	  
       //Games Panel
 	  /*
@@ -88,7 +91,22 @@ public class MainMenu {// extends JPanel {
    }
    
    public static void UpdateGames(MenuButton newCenter) {
-	   
+	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	   int activeX = 250+125-(IMAGE_SIZE/2);
+	   while(newCenter.getX() != activeX) {
+		   if(newCenter.getX() > activeX)
+			   newCenter.setBounds(newCenter.getX()-1, newCenter.getY(), newCenter.getWidth(), newCenter.getHeight());
+		   if(newCenter.getX() < activeX)
+			   newCenter.setBounds(newCenter.getX()+1, newCenter.getY(), newCenter.getWidth(), newCenter.getHeight());
+		   try {
+			   java.util.concurrent.TimeUnit.MICROSECONDS.sleep(1);
+		   }
+		   catch(InterruptedException ex)
+		   {
+		   }
+		   //Repainting Not Working. Perhaps make this background process?
+		   GUIMain.contentMenu.revalidate();
+	   }
    }
    
    public static ButtonInfo GetLeft(List<ButtonInfo> gameInfo, int active) {

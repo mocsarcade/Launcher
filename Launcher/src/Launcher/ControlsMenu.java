@@ -26,6 +26,7 @@ public class ControlsMenu {// extends JPanel {
 	  int rows=2;
 	  int cols=9;
 	  games.setLayout(new GridLayout(rows,cols,(screenSize.width-cols*KEY_WIDTH)/(cols-1), (int) (screenSize.height*0.9-(KEY_HEIGHT*2))/6 ));
+      games.setBounds(0, screenSize.height-250*2-100, screenSize.width, 250*2+100);
 	  //games.setBorder(new EmptyBorder( (int) (screenSize.height*0.9-(KEY_HEIGHT*2))/6, 0, (int) (screenSize.height*0.9-(KEY_HEIGHT*2))/6, 0));
 	  //Up
       for (int i = 1; i <rows+1; i++) { //Start at 1 because row 0 is headerMenus
@@ -128,7 +129,6 @@ public class ControlsMenu {// extends JPanel {
     	games.add(thisButton);
        }
       
-      games.setBounds(0, screenSize.height-250*2-100, screenSize.width, 250*2+100);
       //return games;
    }
 }
