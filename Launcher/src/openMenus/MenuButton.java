@@ -69,8 +69,14 @@ public class MenuButton extends JPanel {
 			addKeyListener((KeyListener) info.openCommand);
 	}
 	
+	public int getID() {
+		return info.gameNum;
+	}
+	
 	public void setPosition(int row, int col) {
 	    buttons[row][col] = this;
+		curRow = row;
+		curCol = col;
 	}
 	
 	public ButtonInfo copyInfo() {

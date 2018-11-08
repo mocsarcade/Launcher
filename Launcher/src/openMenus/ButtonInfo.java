@@ -14,6 +14,12 @@ public class ButtonInfo {
 		openCommand = command;
 		gameNum = gameID;
 	}
+	
+	public ButtonInfo(Icon image, Function command) {
+		gameImage = image;
+		openCommand = command;
+		gameNum = 0;
+	}
 
 	public ButtonInfo() {
 		gameImage = null;

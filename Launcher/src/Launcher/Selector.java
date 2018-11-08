@@ -19,7 +19,6 @@ import openMenus.MenuButton;
 public class Selector extends JPanel {
 	
 	public MenuButton curSelection;
-	public MenuButton[][] fullMenu;
 	private KeyListener InputListener;
 	
 	private static Selector singleton;
@@ -28,7 +27,6 @@ public class Selector extends JPanel {
 		singleton = this;
 		//Save menu setup
 		setFocusable(true);
-		fullMenu = buttons;
 		
 		//Set look
 		Border redBorder = BorderFactory.createLineBorder(Color.RED,5);
@@ -48,7 +46,7 @@ public class Selector extends JPanel {
 		//fullMenu = MenuButton.GetButtons();
 		//System.out.println(fullMenu[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef());
 		//The object we are over may have hidden data or a special position, so set selector to be over its true position
-	    curSelection = fullMenu[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef();
+	    curSelection = MenuButton.GetButtons()[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef();
 	    setBounds(curSelection.GetXPos(),curSelection.GetYPos(),(int) curSelection.getSize().getWidth(), (int) curSelection.getSize().getHeight());
 	}
 	
@@ -87,7 +85,7 @@ public class Selector extends JPanel {
                  }
              }
              else if(InputManager.getManager().getKeyNum('D',0) == e.getKeyCode()) {
-                 if (curSelection.curRow < fullMenu.length - 1) {
+                 if (curSelection.curRow < MenuButton.GetButtons().length - 1) {
                  	LoadSelection(1, 0);
                  }
              }
@@ -97,7 +95,7 @@ public class Selector extends JPanel {
                  }
              }
              else if(InputManager.getManager().getKeyNum('R',0) == e.getKeyCode()) {
-                 if (curSelection.curCol < fullMenu[curSelection.curRow].length - 1) {
+                 if (curSelection.curCol < MenuButton.GetButtons()[curSelection.curRow].length - 1) {
                  	LoadSelection(0, 1);
                  }
              } else if(InputManager.getManager().getKeyNum('A',0) == e.getKeyCode()) {

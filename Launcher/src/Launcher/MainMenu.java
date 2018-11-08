@@ -27,6 +27,7 @@ public class MainMenu {// extends JPanel {
 	
 	//public static int activeX;
 	//public static int activeY;
+	public static List<ButtonInfo> gameInfo;
 	public static MenuButton leftButton;
 	public static MenuButton centerButton;
 	public static MenuButton rightButton;
@@ -46,7 +47,7 @@ public class MainMenu {// extends JPanel {
 	  
 	  //Make GameInfo. Right now it holds a useless function object. Later we will create OpenGame objects
 	  //for what type of game this object is
-      List<ButtonInfo> gameInfo = new ArrayList<ButtonInfo>();
+      gameInfo = new ArrayList<ButtonInfo>();
 	  //Load all games and place in a LIST of GameFunction objects
 	  Scanner in = new Scanner(new File("games/allGames.txt"));
 	  int gameNum = 0;
@@ -54,16 +55,16 @@ public class MainMenu {// extends JPanel {
 		  String gameName = in.next().trim();
 		  gameInfo.add(new ButtonInfo(
 				  new ImageIcon(ImageIO.read(new File("games/" + gameName + "/image.jpg"))),
-				  new GameFunction(gameName)),
-				  gameNum);
+				  new GameFunction(gameName),
+				  gameNum));
 		  gameNum++;
 	  }
 	  in.close();
 	  //Iterator<ButtonInfo> infoIter = gameInfo.iterator();
 	  
-	  leftButton = new GameButton(ROW, LEFT_COL, screenSize.width/(ROW+1) - 10, 250, GetLeft(gameInfo, active));
-	  centerButton = new GameButton(ROW, MIDDLE_COL, screenSize.width/(ROW+1) - 10, 250, GetCenter(gameInfo, active));
-	  rightButton = new GameButton(ROW, RIGHT_COL, screenSize.width/(ROW+1) - 10, 250, GetRight(gameInfo, active));
+	  leftButton = new GameButton(ROW, LEFT_COL, screenSize.width/(ROW+1) - 10, 250, GetLeft(active));
+	  centerButton = new GameButton(ROW, MIDDLE_COL, screenSize.width/(ROW+1) - 10, 250, GetCenter(active));
+	  rightButton = new GameButton(ROW, RIGHT_COL, screenSize.width/(ROW+1) - 10, 250, GetRight(active));
 	  
 	  games.setLayout(null);
       games.setBounds(0, 100, screenSize.width, screenSize.height-100);
@@ -99,6 +100,8 @@ public class MainMenu {// extends JPanel {
    }
    
    public static void UpdateGames(MenuButton newCenter) {
+	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
 	   final int MOVE_RATE = 5;
 	   //Create timer to move games over time
 	   final Timer moveGames = new Timer(1, new ActionListener() {
@@ -116,31 +119,39 @@ public class MainMenu {// extends JPanel {
 			   } else {
 				   if(newCenter.equals(leftButton)) {
 					   //Once movement is complete, reset each button to its position
-					   leftButton.setPosition(MIDDLE_COL, ROW);
-					   centerButton.setPosition(RIGHT_COL, ROW);
+					   leftButton.setPosition(ROW, MIDDLE_COL);
+					   centerButton.setPosition(ROW, RIGHT_COL);
 					   //Update active
-					   active--;
-					   if(active < 0) {
-						   active = ;
-					   }
+					   active = newCenter.getID();
 					   //Destroy offscreen Game
 					   GUIMain.contentMenu.remove(rightButton);
 					   rightButton = centerButton;
 					   centerButton = leftButton;
 					   //Create replacement game
+					   leftButton = new GameButton(ROW, LEFT_COL, screenSize.width/(ROW+1) - 10, 250, GetLeft(active));
+					   GUIMain.contentMenu.add(leftButton);
+					   leftButton.setBounds(250+125-(IMAGE_SIZE/2) - (IMAGE_SIZE+100), (GUIMain.contentMenu.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
 					   
 				   } else if(newCenter.equals(rightButton)) {
 					   //Once movement is complete, reset each button to its position
-					   rightButton.setPosition(MIDDLE_COL, ROW);
-					   centerButton.setPosition(LEFT_COL, ROW);
+					   rightButton.setPosition(ROW, MIDDLE_COL);
+					   centerButton.setPosition(ROW, LEFT_COL);
 					   //Update active
-					   
+					   active = newCenter.getID();
 					   //Destroy offscreen Game
-					   
+					   GUIMain.contentMenu.remove(leftButton);
+					   leftButton = centerButton;
+					   centerButton = rightButton;
 					   //Create replacement game
+					   rightButton = new GameButton(ROW, RIGHT_COL, screenSize.width/(ROW+1) - 10, 250, GetRight(active));
+					   GUIMain.contentMenu.add(rightButton);
+					   rightButton.setBounds(250+125-(IMAGE_SIZE/2) + (IMAGE_SIZE+100), (GUIMain.contentMenu.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
 					   
 				   }
 				   ((Timer)evt.getSource()).stop();
+				   GUIMain.contentMenu.revalidate();
+				   Selector.refocus();
+				   Selector.revalidateSelector();
 			   }
 		   }
 	   });
@@ -164,7 +175,7 @@ public class MainMenu {// extends JPanel {
 	   }*/
    }
    
-   public static ButtonInfo GetLeft(List<ButtonInfo> gameInfo, int active) {
+   public static ButtonInfo GetLeft(int active) {
 	   //If Left button is out of bounds, loop around list
 	   if(active-1 < 0) {
 		   return gameInfo.get(active - 1 + gameInfo.size());
@@ -178,7 +189,7 @@ public class MainMenu {// extends JPanel {
 	   }
    }
    
-   public static ButtonInfo GetCenter(List<ButtonInfo> gameInfo, int active) {
+   public static ButtonInfo GetCenter(int active) {
 	   //If Center button is out of bounds, loop around list
 	   if(active < 0) {
 		   return gameInfo.get(active + gameInfo.size());
@@ -192,7 +203,7 @@ public class MainMenu {// extends JPanel {
 	   }
    }
    
-   public static ButtonInfo GetRight(List<ButtonInfo> gameInfo, int active) {
+   public static ButtonInfo GetRight(int active) {
 	   //If Center button is out of bounds, loop around list
 	   if(active + 1 < 0) {
 		   return gameInfo.get(active + 1 + gameInfo.size());

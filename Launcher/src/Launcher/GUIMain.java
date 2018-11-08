@@ -90,13 +90,13 @@ public class GUIMain {
 		  headerMenus.setLayout(new GridLayout(1,buttonCol));
 		  headerMenus.setPreferredSize(new Dimension(screenSize.width, 100));
 		  //Browse
-		  ButtonInfo browse = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/main.jpg"))), new OpenMainMenu(pane, content));
+		  ButtonInfo browse = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/main.jpg"))), new OpenMainMenu(pane, content), 0);
 		  headerMenus.add(new MenuButton(0, 0, 250, 100, browse));
 		  //Controls
-		  ButtonInfo controls = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/keybinds.jpg"))), new OpenControlMenu(pane, content));
+		  ButtonInfo controls = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/keybinds.jpg"))), new OpenControlMenu(pane, content), 0);
 		  headerMenus.add(new MenuButton(0, 1, 250, 100, controls));
 		  //Add Game
-		  ButtonInfo addGame = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/addgame.jpg"))), new OpenMainMenu(pane, content));
+		  ButtonInfo addGame = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/addgame.jpg"))), new OpenMainMenu(pane, content), 0);
 		  headerMenus.add(new MenuButton(0, 2, 250, 100, addGame));
 		  //Create blank spots
 	      for (int i = 3; i < buttonCol; i++) {
