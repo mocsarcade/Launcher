@@ -55,7 +55,10 @@ public class Selector extends JPanel {
 		//System.out.println(fullMenu[curSelection.curRow + x][curSelection.curCol + y].GetButtonRef());
 		//The object we are over may have hidden data or a special position, so set selector to be over its true position
 	    curSelection = select;
+	    System.out.println("OldSelX = " + getX() + ". SelY = " + getY() + ". Width = " + getSize().getWidth() + ". Height = " + getSize().getHeight());
 	    setBounds(curSelection.GetXPos(),curSelection.GetYPos(),(int) curSelection.getSize().getWidth(), (int) curSelection.getSize().getHeight());
+	    System.out.println("X = " + curSelection.GetXPos() + ". Y = " + curSelection.GetYPos() + ". Width = " + curSelection.getSize().getWidth() + ". Height = " + curSelection.getSize().getHeight());
+	    System.out.println("SelX = " + getX() + ". SelY = " + getY() + ". Width = " + getSize().getWidth() + ". Height = " + getSize().getHeight());
 	}
 	
 	public static void refocus() {
@@ -67,6 +70,9 @@ public class Selector extends JPanel {
 	
 	public static void reloadKeys() {
 		singleton.RELOAD_KEY_LISTENER();
+	}
+	public static void repaintSelector() {
+		singleton.repaint();
 	}
 	public void RELOAD_KEY_LISTENER() {
 		removeKeyListener(InputListener);

@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JLabel;
 
 import Launcher.MainMenu;
+import Launcher.Selector;
 
 public class GameButton extends MenuButton {
 
