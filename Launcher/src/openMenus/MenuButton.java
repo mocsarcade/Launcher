@@ -7,7 +7,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.*;
+import javax.swing.text.StyledDocument;
 
+import Launcher.GUIMain;
+import Launcher.MainMenu;
 import Launcher.Selector;
 
 public class MenuButton extends JPanel {
@@ -98,10 +101,16 @@ public class MenuButton extends JPanel {
 	}
 	
 	public MenuButton GetButtonRef() {
+	    MainMenu.RefreshDescriptionBox(this);
 		return this;
 	}
 	
 	public void activate() {
 		info.activate();
 	}
+	
+    public StyledDocument getDocument() {
+	    //Return default document look
+    	return MainMenu.getDocument();
+    }
 }

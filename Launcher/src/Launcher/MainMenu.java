@@ -33,6 +33,7 @@ public class MainMenu {// extends JPanel {
 	
 	//public static int activeX;
 	//public static int activeY;
+	private static JTextPane description;
 	public static List<ButtonInfo> gameInfo;
 	public static MenuButton leftButton;
 	public static MenuButton centerButton;
@@ -76,12 +77,44 @@ public class MainMenu {// extends JPanel {
       games.setBounds(0, 100, screenSize.width, screenSize.height-100);
       
 	  //Create description box
-	      JTextPane description = new JTextPane();
+	      description = new JTextPane();
 	
 		  //Set Look
 		  description.setEditable(false); description.setFocusable(false); //descriptionBox.setLineWrap(true);
 		  description.setBackground(new Color(0,56,107)); description.setForeground(new Color(224,170,15));
 		  
+		  //Set description's document to MAIN
+		  description.setDocument(getDocument());
+	      
+	      //Finally, add to panel
+		  games.add(description);
+		  description.setBounds(screenSize.width-(int) games.getSize().getHeight(), 0, (int) games.getSize().getHeight(), (int) games.getSize().getHeight());
+	  
+      
+	  //Add Games
+		  games.add(leftButton);
+		  leftButton.setBounds(250+125-(IMAGE_SIZE/2) - (IMAGE_SIZE+100), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
+
+		  games.add(centerButton);
+		  centerButton.setBounds(250+125-(IMAGE_SIZE/2), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE); //250 is the width of the header buttons
+		  
+		  games.add(rightButton);
+		  rightButton.setBounds(250+125-(IMAGE_SIZE/2) + (IMAGE_SIZE+100), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
+	  
+   }
+   
+   public static void RefreshDescriptionBox(MenuButton selection) {
+	   StyledDocument doc = selection.getDocument();
+	   if(description != null && doc != null) {
+		   description.setStyledDocument(doc);
+	   }
+	   //Selector.revalidateSelector();
+   }
+   
+   /*
+    * Gets the stylized document for the description box. The default box that welcomes users is created here
+    */
+   public static StyledDocument getDocument() {
 	      //Define format
 		  SimpleAttributeSet globalAttr = new SimpleAttributeSet(); 
 		  StyleConstants.setAlignment(globalAttr,StyleConstants.ALIGN_CENTER);
@@ -100,24 +133,7 @@ public class MainMenu {// extends JPanel {
 			e.printStackTrace();
 		  }
 		  doc.setParagraphAttributes(0, 200, globalAttr, false);
-		  //Set description's document to MAIN
-		  description.setStyledDocument(doc);
-	      
-	      //Finally, add to panel
-		  games.add(description);
-		  description.setBounds(screenSize.width-(int) games.getSize().getHeight(), 0, (int) games.getSize().getHeight(), (int) games.getSize().getHeight());
-	  
-      
-	  //Add Games
-		  games.add(leftButton);
-		  leftButton.setBounds(250+125-(IMAGE_SIZE/2) - (IMAGE_SIZE+100), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
-
-		  games.add(centerButton);
-		  centerButton.setBounds(250+125-(IMAGE_SIZE/2), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE); //250 is the width of the header buttons
-		  
-		  games.add(rightButton);
-		  rightButton.setBounds(250+125-(IMAGE_SIZE/2) + (IMAGE_SIZE+100), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
-	  
+		  return doc;
    }
    
    public static void UpdateGames(MenuButton newCenter) {
