@@ -8,11 +8,21 @@ public class ButtonInfo {
 	public Icon gameImage;
 	public Function openCommand;
 	public int gameNum;
+	public String gameName;
+	public String description;
 	
 	public ButtonInfo(Icon image, Function command, int gameID) {
 		gameImage = image;
 		openCommand = command;
 		gameNum = gameID;
+	}
+	
+	public ButtonInfo(Icon image, Function command, int gameID, String name, String gameDescription) {
+		gameImage = image;
+		openCommand = command;
+		gameNum = gameID;
+		gameName = name;
+		description = gameDescription;
 	}
 	
 	public ButtonInfo(Icon image, Function command) {

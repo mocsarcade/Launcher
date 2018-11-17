@@ -8,9 +8,11 @@ import java.util.regex.Pattern;
 public class InputManager {
 	
 	public static final int NUM_PLAYERS = 2;
-
-	private static InputManager instance;
 	
+	/*
+	 * This class is a singleton. In order to reach the manager, you have to call the getManager method
+	 */
+	private static InputManager instance;
 	public static InputManager getManager() {
 		if(instance != null) {
 			return instance;
@@ -30,11 +32,15 @@ public class InputManager {
 	private int[] X = new int[NUM_PLAYERS];
 	private int[] Y = new int[NUM_PLAYERS];
 	private int[] Z = new int[NUM_PLAYERS];
+	private boolean activeKeyboard = true;
 	
+	/*
+	 * Manager constructor: Reads the controls file and sets up player controls accordingly
+	 */
 	private InputManager() {
-		
+		Scanner in = null;
 		try {
-			Scanner in = new Scanner(new File("controls.txt")).useDelimiter("(\\s*=\\s*)|(\\n)");
+			in = new Scanner(new File("controls.txt")).useDelimiter("(\\s*=\\s*)|(\\n)");
 			int player = -1;
 			while(in.hasNext()) {
 				String next = in.next();
@@ -100,8 +106,6 @@ public class InputManager {
 					player++;
 				}
 			}
-			
-			in.close();
 		}
 		catch(FileNotFoundException e) {
 			//Create new controls.ini file
@@ -126,38 +130,43 @@ public class InputManager {
 				 Z[1] = 72;
 			UpdateFile();
 		}
+		finally {
+			in.close();
+		}
 	}
 	
 	public void setKey(char key, int code, int player) {
-		char keyLetter = Character.toUpperCase(key);
-		switch(keyLetter) {
-			case 'L':
-				left[player] = code;
-			break;
-			case 'R':
-				right[player] = code;
-			break;
-			case 'U':
-				up[player] = code;
-			break;
-			case 'D':
-				down[player] = code;
-			break;
-			case 'A':
-				A[player] = code;
-			break;
-			case 'B':
-				B[player] = code;
-			break;
-			case 'X':
-				X[player] = code;
-			break;
-			case 'Y':
-				Y[player] = code;
-			break;
-			case 'Z':
-				Z[player] = code;
-			break;
+		if(isUnused(code)) {
+			char keyLetter = Character.toUpperCase(key);
+			switch(keyLetter) {
+				case 'L':
+					left[player] = code;
+				break;
+				case 'R':
+					right[player] = code;
+				break;
+				case 'U':
+					up[player] = code;
+				break;
+				case 'D':
+					down[player] = code;
+				break;
+				case 'A':
+					A[player] = code;
+				break;
+				case 'B':
+					B[player] = code;
+				break;
+				case 'X':
+					X[player] = code;
+				break;
+				case 'Y':
+					Y[player] = code;
+				break;
+				case 'Z':
+					Z[player] = code;
+				break;
+			}
 		}
 	}
 	
@@ -212,28 +221,37 @@ public class InputManager {
 				return -1;
 		}
 	}
-
-	private static boolean isInteger(String str) {
-	    if (str == null) {
-	        return false;
-	    }
-	    if (str.isEmpty()) {
-	        return false;
-	    }
-	    int i = 0;
-	    if (str.charAt(0) == '-') {
-	        if (str.length() == 1) {
-	            return false;
-	        }
-	        i = 1;
-	    }
-	    for (; i < str.length(); i++) {
-	        char c = str.charAt(i);
-	        if (c < '0' || c > '9') {
-	            return false;
-	        }
-	    }
-	    return true;
+	
+	public void allowInput(boolean flag) {
+		activeKeyboard = flag;
+	}
+	
+	public boolean isActive() {
+		return activeKeyboard;
+	}
+	
+	/*
+	 * Checks if a key is unused by arrow keys and the A and buttons
+	 * This method is private because it is only called by the setKey method
+	 * @param keyCode is the code of the newest keystroke being checked if it is already being used
+	 */
+	private boolean isUnused(int keyCode) {
+		if(keyCode == up[0] || keyCode == up[1]) {
+			return false;
+		}
+		if(keyCode == left[0] || keyCode == left[1]) {
+			return false;
+		}
+		if(keyCode == right[0] || keyCode == right[1]) {
+			return false;
+		}
+		if(keyCode == down[0] || keyCode == down[1]) {
+			return false;
+		}
+		if(keyCode == A[0] || keyCode == A[1]) {
+			return false;
+		}
+		return true;
 	}
 	
 	public void UpdateFile() {

@@ -1,8 +1,5 @@
 package openMenus;
-import java.awt.Dimension;
-import java.awt.event.KeyListener;
 
-import javax.swing.JLabel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
@@ -11,7 +8,6 @@ import javax.swing.text.StyledDocument;
 
 import Launcher.InputManager;
 import Launcher.MainMenu;
-import Launcher.Selector;
 
 public class GameButton extends MenuButton {
 
@@ -45,13 +41,14 @@ public class GameButton extends MenuButton {
 		  //Create Description's Doc
 		  StyledDocument doc = new DefaultStyledDocument();
 		  try {
-			doc.insertString(doc.getLength(), "Izza Game!\n\n", headerAttr);
-			doc.insertString(doc.getLength(), "Press " + InputManager.getManager().getKey('L', 0) + " or " + InputManager.getManager().getKey('R', 0) + " to move and "  + InputManager.getManager().getKey('A', 0) +  " to open a game!\n", null);
+			doc.insertString(doc.getLength(), info.gameName + "\n\n", headerAttr);
+			doc.insertString(doc.getLength(), info.description + "\n", null);
+			doc.insertString(doc.getLength(), "Press " + InputManager.getManager().getKey('A', 0) +  " to start!\n", null);
 		  } catch (BadLocationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		  }
-		  doc.setParagraphAttributes(0, 200, globalAttr, false);
+		  doc.setParagraphAttributes(0, 500, globalAttr, false);
 		  return doc;
     }
 

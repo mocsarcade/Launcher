@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.RepaintManager;
 import javax.swing.Timer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -50,6 +52,9 @@ public class MainMenu {// extends JPanel {
    //public MainMenu(int row, int col) {
    public static void createMenu(JPanel games) throws IOException {
 	  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	  games.setLayout(null);
+      games.setBounds(0, screenSize.height-250*2-100, screenSize.width, 250*2+100);
+      
       //Initialize MenuItems
 	  
 	  //Make GameInfo. Right now it holds a useless function object. Later we will create OpenGame objects
@@ -60,11 +65,43 @@ public class MainMenu {// extends JPanel {
 	  int gameNum = 0;
 	  while(in.hasNext()) {
 		  String gameName = in.next().trim();
-		  gameInfo.add(new ButtonInfo(
-				  new ImageIcon(ImageIO.read(new File("games/" + gameName + "/image.jpg"))),
-				  new GameFunction(gameName),
-				  gameNum));
+		  //Load game description for this game and make a gameInfo object for it
+		  Scanner infoReader = new Scanner(new File("games/" + gameName + "/info.txt"));
+		  try {
+			  String _name = "";
+			  String _title = "";
+			  String _description = "";
+			  while(infoReader.hasNextLine()) {
+				  String tag = infoReader.nextLine().trim();
+				  if(tag.equals("TITLE (game window title while playing):") || tag.equals("TITLE:")) {
+					  _title = infoReader.nextLine();
+				  }
+				  if(tag.equals("NAME:")) {
+					  _name = infoReader.nextLine();
+				  }
+				  if(tag.equals("DESCRIPTION:")) {
+					  _description = infoReader.nextLine();
+				  }
+			  }
+			  gameInfo.add(new ButtonInfo(
+					  new ImageIcon(ImageIO.read(new File("games/" + gameName + "/image.jpg"))),
+					  new GameFunction(gameName, _title),
+					  gameNum,
+					  _name,
+					  _description
+					  ));
+		  } catch(Exception e) {
+			  //If the description text file is empty, just make the gameName the name in the inFile and leave the description blank
+			  gameInfo.add(new ButtonInfo(
+					  new ImageIcon(ImageIO.read(new File("games/" + gameName + "/image.jpg"))),
+					  new GameFunction(gameName),
+					  gameNum,
+					  gameName,
+					  ""
+					  ));
+		  }
 		  gameNum++;
+		  infoReader.close();
 	  }
 	  in.close();
 	  //Iterator<ButtonInfo> infoIter = gameInfo.iterator();
@@ -73,9 +110,6 @@ public class MainMenu {// extends JPanel {
 	  centerButton = new GameButton(ROW, MIDDLE_COL, screenSize.width/(ROW+1) - 10, 250, GetCenter(active));
 	  rightButton = new GameButton(ROW, RIGHT_COL, screenSize.width/(ROW+1) - 10, 250, GetRight(active));
 	  
-	  games.setLayout(null);
-      games.setBounds(0, 100, screenSize.width, screenSize.height-100);
-      
 	  //Create description box
 	      description = new JTextPane();
 	
@@ -107,8 +141,9 @@ public class MainMenu {// extends JPanel {
 	   StyledDocument doc = selection.getDocument();
 	   if(description != null && doc != null) {
 		   description.setStyledDocument(doc);
+		   //RepaintManager.currentManager(GUIMain.contentMenu).markCompletelyClean(GUIMain.contentMenu);
 	   }
-	   //Selector.revalidateSelector();
+	   //Selector.update();
    }
    
    /*
@@ -187,8 +222,8 @@ public class MainMenu {// extends JPanel {
 						   
 					   }
 					   ((Timer)evt.getSource()).stop();
-				   }			   }
-
+				   }
+			   }
 			   GUIMain.pane.revalidate();
 		   }
 	   });

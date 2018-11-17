@@ -12,12 +12,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import OpenFunctions.*;
 import openMenus.ButtonInfo;
 import openMenus.EmptyItem;
 import openMenus.MenuButton;
 import openMenus.OpenControlMenu;
 import openMenus.OpenMainMenu;
+import openMenus.OpenAddMenu;
 
 public class GUIMain {
 	
@@ -33,7 +33,7 @@ public class GUIMain {
 		  
 	      
 	      //Place both panels together into the main frame: One on top and one on bottom
-	      pane = new MainFrame();
+	      pane = new JFrame();
 	      pane.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	      /*
 	      pane.setLocationRelativeTo(null);
@@ -53,17 +53,20 @@ public class GUIMain {
 	      */
 	      
 	      pane.setLayout(new GridBagLayout());
+	      pane.setLocationRelativeTo(null);
+
 	      //Create Game Menu
 	      contentMenu = new JPanel();
 	      MainMenu.createMenu(contentMenu);
 	      //Create Header menu
 		  JPanel headers = CreateHeader(pane, contentMenu);
-	      Selector select = new Selector(MenuButton.GetButtons());
-	      
+
 	      //Create Selector
-	      GridBagConstraints c = new GridBagConstraints();
+	      Selector select = new Selector();
 	      pane.add(select);
-	      //Add header (stays the same the WHOLE TIME)
+	      
+		  //Add header (stays the same the WHOLE TIME)
+	      GridBagConstraints c = new GridBagConstraints();
 	      c.gridx = 0;
 	      c.gridy = 0;
 	      c.weighty = 0.1;
@@ -96,7 +99,7 @@ public class GUIMain {
 		  ButtonInfo controls = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/keybinds.jpg"))), new OpenControlMenu(pane, content), 0);
 		  headerMenus.add(new MenuButton(0, 1, 250, 100, controls));
 		  //Add Game
-		  ButtonInfo addGame = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/addgame.jpg"))), new OpenMainMenu(pane, content), 0);
+		  ButtonInfo addGame = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/addgame.jpg"))), new OpenAddMenu(pane, content), 0);
 		  headerMenus.add(new MenuButton(0, 2, 250, 100, addGame));
 		  //Create blank spots
 	      for (int i = 3; i < buttonCol; i++) {

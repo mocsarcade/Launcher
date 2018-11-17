@@ -19,7 +19,6 @@ public class ControlsMenu {// extends JPanel {
 	private static final int KEY_WIDTH = 150;
 	private static final int KEY_HEIGHT = 155;
 
-   //public MainMenu(int row, int col) {
    public static void createMenu(JPanel games) throws IOException {
 	  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
       //Initialize MenuItems

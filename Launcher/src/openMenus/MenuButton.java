@@ -1,17 +1,13 @@
 package openMenus;
-import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.*;
 import javax.swing.text.StyledDocument;
 
-import Launcher.GUIMain;
 import Launcher.MainMenu;
-import Launcher.Selector;
 
 public class MenuButton extends JPanel {
 
@@ -101,7 +97,6 @@ public class MenuButton extends JPanel {
 	}
 	
 	public MenuButton GetButtonRef() {
-	    MainMenu.RefreshDescriptionBox(this);
 		return this;
 	}
 	
@@ -113,4 +108,9 @@ public class MenuButton extends JPanel {
 	    //Return default document look
     	return MainMenu.getDocument();
     }
+
+	public void delete() {
+		buttons[curRow][curCol] = null;
+	}
+	
 }

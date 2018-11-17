@@ -1,0 +1,6 @@
+NAME:
+Banana Bomber
+TITLE (game window title while playing):
+BananaBomber
+DESCRIPTION:
+A reinterpretation of the classic Bomberman vs. Mode. Banana Bomber is a 2-player game in which two monkeys, both equipped with an infinite amount of bombs, try to mine through the map to reach each other and be the last one surviving!
