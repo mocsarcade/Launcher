@@ -1,4 +1,5 @@
 package Launcher;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,12 +18,22 @@ import openMenus.EmptyItem;
 import openMenus.MenuButton;
 import openMenus.OpenControlMenu;
 import openMenus.OpenMainMenu;
-import openMenus.OpenAddMenu;
 
+/*
+ * Main Method
+ * 
+ * This project has three things to do:
+ *  1. AddGame Menu (uncomment header for addMenu below and turn i=2 to i=3)
+ *  2. Adding more possible game types (including steam .exe games) to the addGame menu options
+ *  3. Using the controls of this arcade to set default controls of games that are opened (is that even possible?)
+ *  		If this isn't possible, change controls menu to be for only 1 player, since the keys will only move the arcade itself
+ */
 public class GUIMain {
 	
 	public static JFrame pane;
 	public static JPanel contentMenu;
+	public static Color backgroundColor = new Color(0,28,53);
+	public static Color textColor = new Color(255,127,40);
 	//public static JFrame pane;
 
 	public static void main(String[] args) throws IOException {
@@ -35,6 +46,8 @@ public class GUIMain {
 	      //Place both panels together into the main frame: One on top and one on bottom
 	      pane = new JFrame();
 	      pane.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	      pane.setUndecorated(true);
+	      pane.getContentPane().setBackground(backgroundColor);
 	      /*
 	      pane.setLocationRelativeTo(null);
 	      pane.setLayout(null);
@@ -90,19 +103,21 @@ public class GUIMain {
 		  //This menu has 3 buttons 250 wide each with extra components for buffer space
 		  int buttonCol = screenSize.width/250;
 		  JPanel headerMenus = new JPanel();
+		  headerMenus.setBackground(backgroundColor);
 		  headerMenus.setLayout(new GridLayout(1,buttonCol));
 		  headerMenus.setPreferredSize(new Dimension(screenSize.width, 100));
 		  //Browse
-		  ButtonInfo browse = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/main.jpg"))), new OpenMainMenu(pane, content), 0);
+		  ButtonInfo browse = new ButtonInfo(new ImageIcon(Utility.Transparent(ImageIO.read(new File("images/main.jpg")))), new OpenMainMenu(pane, content), 0);
 		  headerMenus.add(new MenuButton(0, 0, 250, 100, browse));
 		  //Controls
-		  ButtonInfo controls = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/keybinds.jpg"))), new OpenControlMenu(pane, content), 0);
+		  ButtonInfo controls = new ButtonInfo(new ImageIcon(Utility.Transparent(ImageIO.read(new File("images/keybinds.jpg")))), new OpenControlMenu(pane, content), 0);
 		  headerMenus.add(new MenuButton(0, 1, 250, 100, controls));
-		  //Add Game
-		  ButtonInfo addGame = new ButtonInfo(new ImageIcon(ImageIO.read(new File("images/addgame.jpg"))), new OpenAddMenu(pane, content), 0);
-		  headerMenus.add(new MenuButton(0, 2, 250, 100, addGame));
+			  //Add Game
+			  //ButtonInfo addGame = new ButtonInfo(new ImageIcon(Utility.Transparent(ImageIO.read(new File("images/addgame.jpg")))), new OpenAddMenu(pane, content), 0);
+			  //headerMenus.add(new MenuButton(0, 2, 250, 100, addGame));
 		  //Create blank spots
-	      for (int i = 3; i < buttonCol; i++) {
+		  //To add another header button, add the button above and then add 1 to the initial 'i'
+	      for (int i = 2; i < buttonCol; i++) {
 	    	  if(i < buttonCol) {
 	    		  headerMenus.add(new EmptyItem(0, i, 250, 50, browse));
 	    	  }

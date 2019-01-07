@@ -1,6 +1,7 @@
 package openMenus;
 import javax.swing.JLabel;
 
+import Launcher.GUIMain;
 import Launcher.InputManager;
 
 public class KeyButton extends MenuButton {
@@ -24,6 +25,7 @@ public class KeyButton extends MenuButton {
 	public void setLetter(String letter) {
 		remove(label);
 		label = new JLabel(letter);
+		label.setForeground(GUIMain.textColor);
 		add(label);
 		revalidate();
 		repaint();
@@ -33,6 +35,7 @@ public class KeyButton extends MenuButton {
 		key = _key; player = _player;
 		remove(label);
 		label = new JLabel(letter);
+		label.setForeground(GUIMain.textColor);
 		add(label);
 		revalidate();
 		repaint();

@@ -6,9 +6,9 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import OpenFunctions.ChangeKey;
 import openMenus.ButtonInfo;
@@ -26,13 +26,12 @@ public class ControlsMenu {// extends JPanel {
 	  int cols=9;
 	  games.setLayout(new GridLayout(rows,cols,(screenSize.width-cols*KEY_WIDTH)/(cols-1), (int) (screenSize.height*0.9-(KEY_HEIGHT*2))/6 ));
       games.setBounds(0, screenSize.height-250*2-100, screenSize.width, 250*2+100);
-	  //games.setBorder(new EmptyBorder( (int) (screenSize.height*0.9-(KEY_HEIGHT*2))/6, 0, (int) (screenSize.height*0.9-(KEY_HEIGHT*2))/6, 0));
 	  //Up
       for (int i = 1; i <rows+1; i++) { //Start at 1 because row 0 is headerMenus
     	KeyButton thisButton =
     	new KeyButton(i, 0, KEY_WIDTH, KEY_HEIGHT,
         	new ButtonInfo(
-        		new ImageIcon(ImageIO.read(new File("images/key - Up.png"))),
+        		Transparent("images/key - Up.png"),
         		new ChangeKey('U', i-1)
         			));
     	thisButton.Initialize();
@@ -43,7 +42,7 @@ public class ControlsMenu {// extends JPanel {
     	thisButton =
     	new KeyButton(i, 1, KEY_WIDTH, KEY_HEIGHT,
         	new ButtonInfo(
-        		new ImageIcon(ImageIO.read(new File("images/key - Left.png"))),
+        		Transparent("images/key - Left.png"),
         		new ChangeKey('L', i-1)
         			));
     	thisButton.Initialize();
@@ -54,7 +53,7 @@ public class ControlsMenu {// extends JPanel {
     	thisButton =
     	new KeyButton(i, 2, KEY_WIDTH, KEY_HEIGHT,
         	new ButtonInfo(
-        		new ImageIcon(ImageIO.read(new File("images/key - Down.png"))),
+        		Transparent("images/key - Down.png"),
         		new ChangeKey('D', i-1)
         			));
     	thisButton.Initialize();
@@ -65,7 +64,7 @@ public class ControlsMenu {// extends JPanel {
     	thisButton =
     	new KeyButton(i, 3, KEY_WIDTH, KEY_HEIGHT,
         	new ButtonInfo(
-        		new ImageIcon(ImageIO.read(new File("images/key - Right.png"))),
+        		Transparent("images/key - Right.png"),
         		new ChangeKey('R', i-1)
         			));
     	thisButton.Initialize();
@@ -76,7 +75,7 @@ public class ControlsMenu {// extends JPanel {
     	thisButton =
     	new KeyButton(i, 4, KEY_WIDTH, KEY_HEIGHT,
         	new ButtonInfo(
-        		new ImageIcon(ImageIO.read(new File("images/key - A.png"))),
+        		Transparent("images/key - A.png"),
         		new ChangeKey('A', i-1)
         			));
     	thisButton.Initialize();
@@ -87,7 +86,7 @@ public class ControlsMenu {// extends JPanel {
     	thisButton =
     	new KeyButton(i, 5, KEY_WIDTH, KEY_HEIGHT,
         	new ButtonInfo(
-        		new ImageIcon(ImageIO.read(new File("images/key - B.png"))),
+        		Transparent("images/key - B.png"),
         		new ChangeKey('B', i-1)
         			));
     	thisButton.Initialize();
@@ -98,7 +97,7 @@ public class ControlsMenu {// extends JPanel {
     	thisButton =
     	new KeyButton(i, 6, KEY_WIDTH, KEY_HEIGHT,
         	new ButtonInfo(
-        		new ImageIcon(ImageIO.read(new File("images/key - X.png"))),
+        		Transparent("images/key - X.png"),
         		new ChangeKey('X', i-1)
         			));
     	thisButton.Initialize();
@@ -109,7 +108,7 @@ public class ControlsMenu {// extends JPanel {
     	thisButton =
     	new KeyButton(i, 7, KEY_WIDTH, KEY_HEIGHT,
         	new ButtonInfo(
-        		new ImageIcon(ImageIO.read(new File("images/key - Y.png"))),
+        		Transparent("images/key - Y.png"),
         		new ChangeKey('Y', i-1)
         			));
     	thisButton.Initialize();
@@ -120,7 +119,7 @@ public class ControlsMenu {// extends JPanel {
     	thisButton =
     	new KeyButton(i, 8, KEY_WIDTH, KEY_HEIGHT,
         	new ButtonInfo(
-        		new ImageIcon(ImageIO.read(new File("images/key - Z.png"))),
+        		Transparent("images/key - Z.png"),
         		new ChangeKey('Z', i-1)
         			));
     	thisButton.Initialize();
@@ -129,5 +128,9 @@ public class ControlsMenu {// extends JPanel {
        }
       
       //return games;
+   }
+   
+   public static Icon Transparent(String fileURL) throws IOException {
+	   return new ImageIcon(Utility.Transparent(ImageIO.read(new File(fileURL))));
    }
 }

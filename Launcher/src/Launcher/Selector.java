@@ -1,25 +1,15 @@
 package Launcher;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.RepaintManager;
-import javax.swing.Timer;
-import javax.swing.border.Border;
 
-import openMenus.GameButton;
 import openMenus.MenuButton;
 
 public class Selector extends JPanel {
@@ -28,8 +18,11 @@ public class Selector extends JPanel {
 	private KeyListener InputListener;
 	
 	private static Selector singleton;
+	
+	private Image selectorImageHor;
+	private Image selectorImageVer;
 
-	public Selector() {
+	public Selector() throws IOException {
 		singleton = this;
 		//Save menu setup
 		setFocusable(true);
@@ -46,6 +39,9 @@ public class Selector extends JPanel {
         //Define behavior for when and key is pushed. This will change when the controlSet is changed
 		InputListener = getListener();
         addKeyListener(InputListener);
+        
+        selectorImageHor = ImageIO.read(new File("images/SelectorLoop - Hor.jpg"));
+        selectorImageVer = ImageIO.read(new File("images/SelectorLoop - Ver.jpg"));
 	}
 	
 	public static void refocus() {
@@ -64,6 +60,8 @@ public class Selector extends JPanel {
 
 	private void LoadSelection(MenuButton newSelector) {
 	    curSelection = MenuButton.GetButtons()[newSelector.curRow][newSelector.curCol].GetButtonRef();
+		MainMenu.RefreshDescriptionBox(curSelection);
+	    revalidate();
 	}
 
 	public static void revalidateSelector() {
@@ -71,9 +69,14 @@ public class Selector extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g) {
-		setBounds(curSelection.GetXPos(),curSelection.GetYPos(),(int) curSelection.getSize().getWidth(), (int) curSelection.getSize().getHeight());
-		g.setColor(new Color(250,0,0));
-	    g.drawRect(0, 0, (int) curSelection.getSize().getWidth()-1, (int) curSelection.getSize().getHeight()-1);
+		setBounds(curSelection.GetXPos()-10,curSelection.GetYPos()-10,(int) curSelection.getSize().getWidth()+10, (int) curSelection.getSize().getHeight()+10);
+		//g.setColor(new Color(250,0,0));
+	    //g.drawRect(0, 0, (int) curSelection.getSize().getWidth()-1, (int) curSelection.getSize().getHeight()-1);
+
+	    g.drawImage(selectorImageVer, 10, 10, 10, (int) curSelection.getSize().getHeight(), null);
+		g.drawImage(selectorImageHor, 10, 10, (int) curSelection.getSize().getWidth(), 10, null);
+	    g.drawImage(selectorImageVer, (int) curSelection.getSize().getWidth(), 10, 10, (int) curSelection.getSize().getHeight()-1, null);
+	    g.drawImage(selectorImageHor, 10, (int) curSelection.getSize().getHeight(), (int) curSelection.getSize().getWidth(), 10, null);
 	}
 	
 	public static void reloadKeys() {
@@ -112,10 +115,14 @@ public class Selector extends JPanel {
                       }
                   } else if(InputManager.getManager().getKeyNum('A',0) == e.getKeyCode()) {
                   	 curSelection.activate();
-                  }
+                  } else if(KeyEvent.VK_ESCAPE == e.getKeyCode()) {
+                   	 System.exit(0);
+                   }
         	  }
           }
        };
    }
+   
+   
 	
 }

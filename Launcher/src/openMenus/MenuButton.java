@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.StyledDocument;
 
+import Launcher.GUIMain;
 import Launcher.MainMenu;
 
 public class MenuButton extends JPanel {
@@ -27,6 +28,7 @@ public class MenuButton extends JPanel {
 	}
     
 	public MenuButton(int row, int col, int width, int height, ButtonInfo thisInfo) {
+		setBackground(GUIMain.backgroundColor);
 		//Set size and position
         setPreferredSize(new Dimension(width, height));
 

@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import javax.swing.Timer;
 import Launcher.InputManager;
+import Launcher.MainMenu;
+import Launcher.Selector;
 
 public class GameFunction extends Function {
 	
@@ -26,6 +28,7 @@ public class GameFunction extends Function {
 	@Override
 	public void activate() {
 		InputManager.getManager().allowInput(false);
+		MainMenu.RunningGame();
 		try {
 			final Process runningGame = Runtime.getRuntime().
 				//Make new cmd appear to open game
@@ -39,6 +42,7 @@ public class GameFunction extends Function {
 						runningGame.exitValue();
 						//If you make it past exitValue without an exception, we're good!
 						InputManager.getManager().allowInput(true);
+						Selector.revalidateSelector();
 						((Timer)evt.getSource()).stop();
 					} catch(Exception e) {
 						//If an error occurs, then focus on the window and continue

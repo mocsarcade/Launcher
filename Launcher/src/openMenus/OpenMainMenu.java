@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Launcher.GUIMain;
 import Launcher.MainMenu;
 import OpenFunctions.Function;
 
@@ -29,6 +30,7 @@ public class OpenMainMenu extends Function {
 			contentPane.removeAll();
 			//Make and add new menu
 			MainMenu.createMenu(contentPane);
+			contentPane.setBackground(GUIMain.backgroundColor);
 			mainFrame.revalidate();
 			mainFrame.repaint();
 		} catch (IOException e) {

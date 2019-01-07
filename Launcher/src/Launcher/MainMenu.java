@@ -1,7 +1,6 @@
 package Launcher;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,16 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.RepaintManager;
 import javax.swing.Timer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -33,8 +28,6 @@ import openMenus.GameButton;
 
 public class MainMenu {// extends JPanel {
 	
-	//public static int activeX;
-	//public static int activeY;
 	private static JTextPane description;
 	public static List<ButtonInfo> gameInfo;
 	public static MenuButton leftButton;
@@ -45,15 +38,20 @@ public class MainMenu {// extends JPanel {
 	public static final int RIGHT_COL = 2;
 	public static final int ROW = 1;
 	
-	public static final int IMAGE_SIZE = 500;
+	public static final int IMAGE_SIZE_X = 500;
+	public static final int IMAGE_SIZE_Y = 440;
 	
 	public static int active = 1;
+	
+	//Runtime variables
+	private static Timer movementTimer;
 
    //public MainMenu(int row, int col) {
    public static void createMenu(JPanel games) throws IOException {
 	  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	  games.setLayout(null);
       games.setBounds(0, screenSize.height-250*2-100, screenSize.width, 250*2+100);
+	  games.setBackground(GUIMain.backgroundColor);
       
       //Initialize MenuItems
 	  
@@ -84,7 +82,7 @@ public class MainMenu {// extends JPanel {
 				  }
 			  }
 			  gameInfo.add(new ButtonInfo(
-					  new ImageIcon(ImageIO.read(new File("games/" + gameName + "/image.jpg"))),
+					  new ImageIcon(Utility.Transparent(ImageIO.read(new File("games/" + gameName + "/image.jpg")))),
 					  new GameFunction(gameName, _title),
 					  gameNum,
 					  _name,
@@ -93,7 +91,7 @@ public class MainMenu {// extends JPanel {
 		  } catch(Exception e) {
 			  //If the description text file is empty, just make the gameName the name in the inFile and leave the description blank
 			  gameInfo.add(new ButtonInfo(
-					  new ImageIcon(ImageIO.read(new File("games/" + gameName + "/image.jpg"))),
+					  new ImageIcon(Utility.Transparent(ImageIO.read(new File("games/" + gameName + "/image.jpg")))),
 					  new GameFunction(gameName),
 					  gameNum,
 					  gameName,
@@ -127,13 +125,13 @@ public class MainMenu {// extends JPanel {
       
 	  //Add Games
 		  games.add(leftButton);
-		  leftButton.setBounds(250+125-(IMAGE_SIZE/2) - (IMAGE_SIZE+100), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
+		  leftButton.setBounds(250+125-(IMAGE_SIZE_X/2) - (IMAGE_SIZE_X+150), (games.getHeight()/8), IMAGE_SIZE_X, IMAGE_SIZE_Y);
 
 		  games.add(centerButton);
-		  centerButton.setBounds(250+125-(IMAGE_SIZE/2), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE); //250 is the width of the header buttons
+		  centerButton.setBounds(250+125-(IMAGE_SIZE_X/2), (games.getHeight()/8), IMAGE_SIZE_X, IMAGE_SIZE_Y); //250 is the width of the header buttons
 		  
 		  games.add(rightButton);
-		  rightButton.setBounds(250+125-(IMAGE_SIZE/2) + (IMAGE_SIZE+100), (games.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
+		  rightButton.setBounds(250+125-(IMAGE_SIZE_X/2) + (IMAGE_SIZE_X+150), (games.getHeight()/8), IMAGE_SIZE_X, IMAGE_SIZE_Y);
 	  
    }
    
@@ -144,6 +142,32 @@ public class MainMenu {// extends JPanel {
 		   //RepaintManager.currentManager(GUIMain.contentMenu).markCompletelyClean(GUIMain.contentMenu);
 	   }
 	   //Selector.update();
+   }
+   
+   public static void RunningGame() {
+
+      //Define format
+	  SimpleAttributeSet globalAttr = new SimpleAttributeSet(); 
+	  StyleConstants.setAlignment(globalAttr,StyleConstants.ALIGN_CENTER);
+
+	  SimpleAttributeSet headerAttr = new SimpleAttributeSet();
+	  StyleConstants.setFontSize(headerAttr, 20);
+	  StyleConstants.setBold(headerAttr, true);
+	  
+	  //Create Description's Doc
+	  StyledDocument doc = new DefaultStyledDocument();
+	  try {
+		doc.insertString(doc.getLength(), "Opening Game:\n\n", headerAttr);
+		doc.insertString(doc.getLength(), "Please Wait", null);
+	  } catch (BadLocationException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	  }
+	  doc.setParagraphAttributes(0, 200, globalAttr, false);
+	
+	   if(description != null && doc != null) {
+		   description.setStyledDocument(doc);
+	   }
    }
    
    /*
@@ -175,10 +199,14 @@ public class MainMenu {// extends JPanel {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 	   final int MOVE_RATE = 10;
+	   //Stop current timer if running
+	   if(movementTimer != null) {
+		   movementTimer.stop();
+	   }
 	   //Create timer to move games over time
-	   final Timer moveGames = new Timer(1, new ActionListener() {
+	   movementTimer = new Timer(1, new ActionListener() {
 		   public void actionPerformed(ActionEvent evt) {
-			   int activeX = 250+125-(IMAGE_SIZE/2);
+			   int activeX = 250+125-(IMAGE_SIZE_X/2);
 			   for(int i=0; i<MOVE_RATE; i++) {
 				   if(newCenter.getX() > activeX) {
 					   leftButton.setBounds(leftButton.getX()-1, leftButton.getY(), leftButton.getWidth(), leftButton.getHeight());
@@ -203,7 +231,7 @@ public class MainMenu {// extends JPanel {
 						   //Create replacement game
 						   leftButton = new GameButton(ROW, LEFT_COL, screenSize.width/(ROW+1) - 10, 250, GetLeft(active));
 						   GUIMain.contentMenu.add(leftButton);
-						   leftButton.setBounds(250+125-(IMAGE_SIZE/2) - (IMAGE_SIZE+100), (GUIMain.contentMenu.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
+						   leftButton.setBounds(250+125-(IMAGE_SIZE_X/2) - (IMAGE_SIZE_X+150), (GUIMain.contentMenu.getHeight()/8), IMAGE_SIZE_X, IMAGE_SIZE_Y);
 						   
 					   } else if(newCenter.equals(rightButton)) {
 						   //Once movement is complete, reset each button to its position
@@ -218,7 +246,7 @@ public class MainMenu {// extends JPanel {
 						   //Create replacement game
 						   rightButton = new GameButton(ROW, RIGHT_COL, screenSize.width/(ROW+1) - 10, 250, GetRight(active));
 						   GUIMain.contentMenu.add(rightButton);
-						   rightButton.setBounds(250+125-(IMAGE_SIZE/2) + (IMAGE_SIZE+100), (GUIMain.contentMenu.getHeight()/8), IMAGE_SIZE, IMAGE_SIZE);
+						   rightButton.setBounds(250+125-(IMAGE_SIZE_X/2) + (IMAGE_SIZE_X+150), (GUIMain.contentMenu.getHeight()/8), IMAGE_SIZE_X, IMAGE_SIZE_Y);
 						   
 					   }
 					   ((Timer)evt.getSource()).stop();
@@ -227,7 +255,7 @@ public class MainMenu {// extends JPanel {
 			   GUIMain.pane.revalidate();
 		   }
 	   });
-	   moveGames.start();
+	   movementTimer.start();
    }
    
    public static ButtonInfo GetLeft(int active) {
